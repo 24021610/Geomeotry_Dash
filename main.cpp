@@ -5,6 +5,22 @@
 
 using namespace std;
 
+void wait()
+{
+    SDL_Event event;
+    bool quit = false;
+    while (!quit)
+    {
+        SDL_PollEvent(&event);
+        if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN)
+        {
+            quit = true;
+        }
+        SDL_Delay(100);
+    }
+
+}
+
 int main(int argc, char *argv[])
 {
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
@@ -17,6 +33,8 @@ int main(int argc, char *argv[])
     gamemap.LoadTiles();
     gamemap.DrawMap();
     SDL_RenderPresent(renderer);
+
+    wait();
 
 
 }

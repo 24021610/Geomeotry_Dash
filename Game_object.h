@@ -11,8 +11,10 @@ struct Gameobject{
 
    void loadTexture(const char *filename)
    {
-            texture = IMG_LoadTexture(renderer, filename);
-            if (texture == nullptr) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load Texture: %s", IMG_GetError());
+        SDL_Surface *surface = IMG_Load(filename);
+        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface -> format, 255, 255, 255));
+        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        if (texture == nullptr) SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "Load Texture: %s", IMG_GetError());
    }
 
    void SetRect(const int &x, const int &y)

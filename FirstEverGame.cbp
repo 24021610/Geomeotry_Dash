@@ -38,6 +38,7 @@
 			<Add option="-lmingw32 -lSDL2main -lSDL2" />
 			<Add directory="../../SDL2-devel-2.30.12-mingw/SDL2-2.30.12/x86_64-w64-mingw32/lib" />
 		</Linker>
+		<Unit filename="Game_Character.h" />
 		<Unit filename="Game_object.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
