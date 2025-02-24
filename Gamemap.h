@@ -23,6 +23,11 @@ struct GameMap{
     Map game_map;
     FILE* fp = NULL;
 
+    Map GetMap() const
+    {
+        return game_map;
+    }
+
     void LoadMap(char* filename){
         fopen_s(&fp, filename, "rb");
         if(fp == NULL) return;

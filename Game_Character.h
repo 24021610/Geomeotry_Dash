@@ -5,7 +5,8 @@
 #include <stdfix.h>
 
 struct GameCharacter{
-    Gameobject character;
+    SDL_Texture* texture;
+    SDL_Rect rect;
     float x_val, y_val;
     float x_pos, y_pos;
 
@@ -21,6 +22,8 @@ struct GameCharacter{
 
     GameCharacter()
     {
+    rect.w = 60;
+    rect.h = 60;
     frame = 0;
 	x_pos = 32;
 	y_pos = 380;
@@ -37,15 +40,16 @@ struct GameCharacter{
 
     void LoadImg(const char* filename)
     {
-        character.texture =  IMG_LoadTexture(renderer, filename);
-        width_frame = character.rect.w;
-        height_frame = character.rect.h;
+        texture =  IMG_LoadTexture(renderer, filename);
+        width_frame = rect.w;
+        height_frame = rect.h;
     }
 
     void Show()
     {
-        if (status == WALK_RIGHT) LoadImg("model.PNG");
-        SDL_RenderCopy(renderer, character.texture, NULL, &character.rect);
+        rect.x = x_pos;
+        rect.y = y_pos;
+        SDL_RenderCopy(renderer, texture, NULL, &rect);
     }
 
     void HandleInput(SDL_Event event)
@@ -62,7 +66,7 @@ struct GameCharacter{
     }
 
 
-    void Doplayer()
+    void Doplayer(Map &map_data)
     {
         x_val = 0;
         y_val += GRAVITY;
@@ -96,7 +100,7 @@ struct GameCharacter{
                 int val1 = map_data.tile[y1][x2];
                 int val2 = map_data.tile[y2][x2];
 
-                if(map_data.tile[y1][x2] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE)
+                if(val1 != BLANK_TILE || val2 != BLANK_TILE)
                 {
                         x_pos = x2* OBJECT_SIZE;
                         x_pos -= width_frame+1;
@@ -120,7 +124,7 @@ struct GameCharacter{
                 int val1 = map_data.tile[y2][x1];
                 int val2 = map_data.tile[y2][x2];
 
-                if(map_data.tile[y2][x1] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE)
+                if(val1= BLANK_TILE || val2 != BLANK_TILE)
                 {
                         y_pos = y2 * OBJECT_SIZE;
                         y_pos -= height_frame+1;
@@ -148,8 +152,6 @@ struct GameCharacter{
         if(x_pos+width_frame > map_data.max_x) x_pos = map_data.max_x - width_frame - 1;
 
     }
-
-
 
 
 };

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1740386570 source:d:\coding projects\firstevergame\main.cpp
+1740403418 source:d:\coding projects\firstevergame\main.cpp
 	"header.h"
 	"Game_object.h"
 	"Gamemap.h"
@@ -471,7 +471,7 @@
 	"graphics.h"
 	"header.h"
 
-1740279801 d:\coding projects\firstevergame\gamemap.h
+1740403418 d:\coding projects\firstevergame\gamemap.h
 	<iostream>
 	"header.h"
 	"Game_object.h"
@@ -491,7 +491,7 @@
 	"header.h"
 	"stdfix.h"
 
-1740386789 d:\coding projects\firstevergame\game_character.h
+1740403903 d:\coding projects\firstevergame\game_character.h
 	"header.h"
 	<stdfix.h>
 
