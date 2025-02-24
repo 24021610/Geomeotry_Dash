@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     GameCharacter character;
+    character.LoadImg("Resources/model.jpg");
     GameMap background;
 
     background.LoadMap("map1.txt");
@@ -28,14 +29,18 @@ int main(int argc, char *argv[])
                 character.HandleInput(event);
             }
 
+
+            SDL_SetRenderDrawColor(renderer, 0,255,255,255);
             SDL_RenderClear(renderer);
             background.DrawMap();
             Map map_data = background.GetMap();
 
+            character.Check_to_map(map_data);
             character.Doplayer(map_data);
             character.Show();
 
             SDL_RenderPresent(renderer);
+            SDL_Delay(100);
 
     }
 

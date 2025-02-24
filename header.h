@@ -27,8 +27,9 @@ struct Input
 #define WALK_NONE  0
 #define WALK_RIGHT 1
 
-#define GRAVITY 0.8
+#define GRAVITY 1
 #define MAX_FALL_SPEED 10
+#define PLAYER_SPEED 20
 
 
 #define BLANK_TILE 1

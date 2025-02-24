@@ -23,7 +23,7 @@ struct GameMap{
     Map game_map;
     FILE* fp = NULL;
 
-    Map GetMap() const
+    Map GetMap()
     {
         return game_map;
     }

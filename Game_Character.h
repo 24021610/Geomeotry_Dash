@@ -22,11 +22,12 @@ struct GameCharacter{
 
     GameCharacter()
     {
+    texture = NULL;
     rect.w = 60;
     rect.h = 60;
     frame = 0;
-	x_pos = 32;
-	y_pos = 380;
+	x_pos = 0;
+	y_pos = 0;
 
 	x_val = 0;
 	y_val = 0;
@@ -41,15 +42,15 @@ struct GameCharacter{
     void LoadImg(const char* filename)
     {
         texture =  IMG_LoadTexture(renderer, filename);
+        if (texture == nullptr) SDL_Quit();
         width_frame = rect.w;
         height_frame = rect.h;
     }
 
     void Show()
     {
-        rect.x = x_pos;
-        rect.y = y_pos;
-        SDL_RenderCopy(renderer, texture, NULL, &rect);
+        SDL_Rect dest = {x_pos, y_pos, 60, 60};
+        SDL_RenderCopy(renderer, texture, NULL, &dest);
     }
 
     void HandleInput(SDL_Event event)
@@ -59,6 +60,9 @@ struct GameCharacter{
         {
             switch (event.key.keysym.sym)
             {
+            case SDLK_RIGHT:
+                input_type.right = 1;
+
             case SDLK_SPACE:
                 input_type.jump = 1;
             }
@@ -68,14 +72,9 @@ struct GameCharacter{
 
     void Doplayer(Map &map_data)
     {
-        x_val = 0;
-        y_val += GRAVITY;
-        if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
+        x_val =5;
+        y_val += 10;
 
-        if(input_type.jump == 1)
-        {
-
-        }
     }
 
 
@@ -127,7 +126,7 @@ struct GameCharacter{
                 if(val1= BLANK_TILE || val2 != BLANK_TILE)
                 {
                         y_pos = y2 * OBJECT_SIZE;
-                        y_pos -= height_frame+1;
+                        y_pos -= (height_frame+1);
                         y_val = 0;
                         on_ground = true;
                 }
@@ -150,10 +149,7 @@ struct GameCharacter{
         y_pos += y_val;
 
         if(x_pos+width_frame > map_data.max_x) x_pos = map_data.max_x - width_frame - 1;
-
     }
-
-
 };
 
 #endif // GAME_CHARACTER_H_INCLUDED
