@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <windows.h>
 #include <stdfix.h>
 
@@ -19,12 +20,18 @@ extern SDL_Renderer* renderer = SDL_CreateRenderer(window, -1 , SDL_RENDERER_ACC
 
 struct Input
 {
-    int right_;
-    int jump_;
+    int right;
+    int jump;
 };
 
 #define WALK_NONE  0
 #define WALK_RIGHT 1
+
+#define GRAVITY 0.8
+#define MAX_FALL_SPEED 10
+
+
+#define BLANK_TILE 1
 
 
 #endif // HEADER_H_INCLUDED

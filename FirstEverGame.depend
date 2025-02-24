@@ -1,8 +1,9 @@
 # depslib dependency file v1.0
-1740320469 source:d:\coding projects\firstevergame\main.cpp
+1740386570 source:d:\coding projects\firstevergame\main.cpp
 	"header.h"
 	"Game_object.h"
 	"Gamemap.h"
+	"Game_Character.h"
 	<stdfix.h>
 
 1738429358 d:\sdl2-devel-2.30.12-mingw\sdl2-2.30.12\x86_64-w64-mingw32\include\sdl2\sdl.h
@@ -454,13 +455,14 @@
 	<SDL.h>
 	"header.h"
 
-1740380969 d:\coding projects\firstevergame\header.h
+1740386772 d:\coding projects\firstevergame\header.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 	<iostream>
 	<string>
+	<algorithm>
 	<windows.h>
 	<stdfix.h>
 
@@ -485,7 +487,11 @@
 	"header.h"
 	"Game_object.h"
 
-1740366151 d:\coding projects\firstevergame\game_object.h
+1740385562 d:\coding projects\firstevergame\game_object.h
 	"header.h"
 	"stdfix.h"
+
+1740386789 d:\coding projects\firstevergame\game_character.h
+	"header.h"
+	<stdfix.h>
 
