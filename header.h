@@ -28,7 +28,9 @@ struct Input
 #define WALK_RIGHT 1
 
 #define GRAVITY 1
+#define RUN_SPEED 5
 #define MAX_FALL_SPEED 10
+#define MAX_RUN_SPEED 10
 #define PLAYER_SPEED 20
 
 

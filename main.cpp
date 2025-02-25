@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
             character.Show();
 
             SDL_RenderPresent(renderer);
-            SDL_Delay(100);
+            SDL_Delay(200);
 
     }
 

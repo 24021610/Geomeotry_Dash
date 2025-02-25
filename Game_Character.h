@@ -31,8 +31,8 @@ struct GameCharacter{
 
 	x_val = 0;
 	y_val = 0;
-	width_frame = 0;
-	height_frame = 0;
+	width_frame = 60;
+	height_frame = 60;
 	status = WALK_NONE;
 	input_type.jump = 0;
 	input_type.right = 0;
@@ -72,9 +72,12 @@ struct GameCharacter{
 
     void Doplayer(Map &map_data)
     {
-        x_val =5;
-        y_val += 10;
+        x_val += RUN_SPEED;
+        if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
+        y_val += 5;
+        if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
 
+        Check_to_map(map_data);
     }
 
 
@@ -85,14 +88,14 @@ struct GameCharacter{
 
         //check ngang
 
-        int height_min = (height_frame > OBJECT_SIZE ? height_frame : OBJECT_SIZE);
+        int height_min = min(height_frame , OBJECT_SIZE) ;
         x1 = (x_pos + x_val) / OBJECT_SIZE;
         x2 = (x_pos + x_val + width_frame-1) / OBJECT_SIZE;
 
         y1 = y_pos / OBJECT_SIZE;
         y2 = (y_pos + height_min - 1) / OBJECT_SIZE;
 
-        if(x1 >= 0&& x2 < GAME_MAP_X && y1 >=0 && y2 < GAME_MAP_Y)
+        if(x1 >= 0 && x2 < GAME_MAP_X && y1 >=0 && y2 < GAME_MAP_Y)
         {
             if (x_val > 0)
             {
@@ -113,17 +116,17 @@ struct GameCharacter{
         x1 = x_pos / OBJECT_SIZE;
         x2 = (x_pos + width_min) / OBJECT_SIZE;
 
-        y1 = (y_pos + x_val) / OBJECT_SIZE;
-        y2 = (y_pos + x_val + height_frame-1) / OBJECT_SIZE;
+        y1 = (y_pos + y_val) / OBJECT_SIZE;
+        y2 = (y_pos + y_val + height_frame-1) / OBJECT_SIZE;
 
-        if(x1 >= 0&& x2 < GAME_MAP_X && y1 >=0 && y2 < GAME_MAP_Y)
+        if(x1 >= 0 && x2 < GAME_MAP_X && y1 >=0 && y2 < GAME_MAP_Y)
         {
             if (y_val > 0)
             {
                 int val1 = map_data.tile[y2][x1];
                 int val2 = map_data.tile[y2][x2];
 
-                if(val1= BLANK_TILE || val2 != BLANK_TILE)
+                if(val1 != BLANK_TILE || val2 != BLANK_TILE)
                 {
                         y_pos = y2 * OBJECT_SIZE;
                         y_pos -= (height_frame+1);
@@ -132,7 +135,7 @@ struct GameCharacter{
                 }
             }
 
-            else if(y_val >0)
+            else if(y_val <= 0)
             {
                 int val1 = map_data.tile[y1][x1];
 				int val2 = map_data.tile[y1][x2];
@@ -148,7 +151,7 @@ struct GameCharacter{
         x_pos += x_val;
         y_pos += y_val;
 
-        if(x_pos+width_frame > map_data.max_x) x_pos = map_data.max_x - width_frame - 1;
+
     }
 };
 
