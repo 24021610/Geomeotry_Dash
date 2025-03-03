@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1740449605 source:d:\coding projects\firstevergame\main.cpp
+1740901297 source:d:\coding projects\firstevergame\main.cpp
 	"header.h"
 	"Game_object.h"
 	"Gamemap.h"
 	"Game_Character.h"
 	<stdfix.h>
+	"Timer.h"
 
 1738429358 d:\sdl2-devel-2.30.12-mingw\sdl2-2.30.12\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -455,7 +456,7 @@
 	<SDL.h>
 	"header.h"
 
-1740408262 d:\coding projects\firstevergame\header.h
+1740839895 d:\coding projects\firstevergame\header.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -471,7 +472,7 @@
 	"graphics.h"
 	"header.h"
 
-1740406349 d:\coding projects\firstevergame\gamemap.h
+1740920358 d:\coding projects\firstevergame\gamemap.h
 	<iostream>
 	"header.h"
 	"Game_object.h"
@@ -487,11 +488,34 @@
 	"header.h"
 	"Game_object.h"
 
-1740385562 d:\coding projects\firstevergame\game_object.h
+1740903252 d:\coding projects\firstevergame\game_object.h
 	"header.h"
 	"stdfix.h"
 
-1740449639 d:\coding projects\firstevergame\game_character.h
+1740968501 d:\coding projects\firstevergame\game_character.h
 	"header.h"
 	<stdfix.h>
+
+1735223262 d:\downloads\sdl2_image-devel-2.8.4-mingw\sdl2_image-2.8.4\x86_64-w64-mingw32\include\sdl2\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1705857752 d:\downloads\sdl2_mixer-devel-2.8.0-mingw\sdl2_mixer-2.8.0\x86_64-w64-mingw32\include\sdl2\sdl_mixer.h
+	"SDL_stdinc.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_endian.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1735807588 d:\downloads\sdl2_ttf-devel-2.24.0-mingw\sdl2_ttf-2.24.0\x86_64-w64-mingw32\include\sdl2\sdl_ttf.h
+	"SDL.h"
+	"begin_code.h"
+	"close_code.h"
+
+1740838520 d:\coding projects\firstevergame\timer.h
+	"header.h"
 

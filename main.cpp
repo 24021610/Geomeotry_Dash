@@ -3,9 +3,8 @@
 #include "Gamemap.h"
 #include "Game_Character.h"
 #include <stdfix.h>
+#include "Timer.h"
 
-
-using namespace std;
 
 int main(int argc, char *argv[])
 {
@@ -14,15 +13,21 @@ int main(int argc, char *argv[])
 
     GameCharacter character;
     character.LoadImg("Resources/model.jpg");
-    GameMap background;
 
-    background.LoadMap("map1.txt");
-    background.LoadTiles();
+    Gameobject backgr;
+    backgr.loadTexture("Resources/background.png");
+
+    GameMap game_map_;
+    game_map_.LoadMap("map1.txt");
+    game_map_.LoadTiles();
+
+    Timer timer;
 
     bool is_quit = false;
     SDL_Event event;
     while (!is_quit)
     {
+        timer.start();
         while(SDL_PollEvent(&event))
             {
                 if(event.type == SDL_QUIT) is_quit = true;
@@ -30,18 +35,27 @@ int main(int argc, char *argv[])
             }
 
 
-            SDL_SetRenderDrawColor(renderer, 0,255,255,255);
-            SDL_RenderClear(renderer);
-            background.DrawMap();
-            Map map_data = background.GetMap();
 
-            character.Check_to_map(map_data);
+            Map map_data = game_map_.GetMap();
+            character.SetMapXY(map_data.start_x, map_data.start_y);
             character.Doplayer(map_data);
+
+            game_map_.SetMap(map_data);
+            backgr.renderTexture();
+            game_map_.DrawMap();
             character.Show();
 
             SDL_RenderPresent(renderer);
-            SDL_Delay(200);
+            SDL_RenderClear(renderer);
 
+            int real_time = timer.Get_Ticks();
+            int one_frame = 1000/FRAME_PER_SECOND; // MILLISECOND
+
+            if(real_time < one_frame)
+            {
+                int delay = one_frame - real_time;
+                SDL_Delay(delay);
+            }
     }
 
 

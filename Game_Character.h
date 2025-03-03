@@ -18,6 +18,11 @@ struct GameCharacter{
     int status;
     bool on_ground;
 
+    int map_x_;
+    int map_y_;
+
+    int come_back_time;
+
 
 
     GameCharacter()
@@ -27,16 +32,25 @@ struct GameCharacter{
     rect.h = 60;
     frame = 0;
 	x_pos = 0;
-	y_pos = 0;
+	y_pos = 360;
 
 	x_val = 0;
 	y_val = 0;
 	width_frame = 60;
 	height_frame = 60;
+	map_x_ = 0;
+	map_y_ = 0;
 	status = WALK_NONE;
 	input_type.jump = 0;
 	input_type.right = 0;
 	on_ground = false;
+	come_back_time = 0;
+    }
+
+    void SetMapXY(const int map_x, const int map_y)
+    {
+        map_x_ = map_x;
+        map_y_ = map_y;
     }
 
     void LoadImg(const char* filename)
@@ -49,7 +63,11 @@ struct GameCharacter{
 
     void Show()
     {
-        SDL_Rect dest = {x_pos, y_pos, 60, 60};
+        SDL_Rect dest;
+        dest.x = x_pos - map_x_;
+        dest.y = y_pos - map_y_;
+        dest.w = 60;
+        dest.h = 60;
         SDL_RenderCopy(renderer, texture, NULL, &dest);
     }
 
@@ -60,9 +78,6 @@ struct GameCharacter{
         {
             switch (event.key.keysym.sym)
             {
-            case SDLK_RIGHT:
-                input_type.right = 1;
-
             case SDLK_SPACE:
                 input_type.jump = 1;
             }
@@ -74,12 +89,26 @@ struct GameCharacter{
     {
         x_val += RUN_SPEED;
         if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
-        y_val += 5;
+
+
+        y_val += 5 ;
         if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
 
         Check_to_map(map_data);
+
+    if(input_type.jump == 1)
+    {
+        if(on_ground == true)
+        {
+        y_val = -25;
+        on_ground = false;
+        input_type.jump = 0;
+        }
     }
 
+    Check_to_map(map_data);
+    CenterEntityOnMap(map_data);
+}
 
     void Check_to_map(Map& map_data)
     {
@@ -153,6 +182,22 @@ struct GameCharacter{
 
 
     }
+
+ void CenterEntityOnMap(Map& map_data)
+{
+
+	map_data.start_x = x_pos - (SCREEN_WIDTH / 3.4);
+
+	if (map_data.start_x < 0)
+	{
+		map_data.start_x = 0;
+	}
+	else if (map_data.start_x + SCREEN_WIDTH >= map_data.max_x)
+	{
+		map_data.start_x = map_data.max_x - SCREEN_WIDTH;
+	}
+}
+
 };
 
 #endif // GAME_CHARACTER_H_INCLUDED
