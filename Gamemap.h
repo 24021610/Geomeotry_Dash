@@ -6,8 +6,8 @@
 #include "Game_object.h"
 
 #define GAME_MAP_X 36
-#define GAME_MAP_Y 10
-#define OBJECT_SIZE 60
+#define GAME_MAP_Y 15
+#define OBJECT_SIZE 40
 
 using namespace std;
 

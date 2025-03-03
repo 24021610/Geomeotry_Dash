@@ -11,18 +11,18 @@ struct GameCharacter{
     float x_pos, y_pos;
 
     int width_frame, height_frame;
-    SDL_Rect  frame_clip[4];
+    SDL_Rect frame_clip[7];
 
     Input input_type;
     int frame;
     int status;
     bool on_ground;
+    bool alive;
 
     int map_x_;
     int map_y_;
 
     int come_back_time;
-
 
 
     GameCharacter()
@@ -36,14 +36,15 @@ struct GameCharacter{
 
 	x_val = 0;
 	y_val = 0;
-	width_frame = 60;
-	height_frame = 60;
+	width_frame = 40;
+	height_frame = 40;
 	map_x_ = 0;
 	map_y_ = 0;
 	status = WALK_NONE;
 	input_type.jump = 0;
 	input_type.right = 0;
 	on_ground = false;
+	alive = true;
 	come_back_time = 0;
     }
 
@@ -61,14 +62,18 @@ struct GameCharacter{
         height_frame = rect.h;
     }
 
+
+
     void Show()
     {
+
         SDL_Rect dest;
         dest.x = x_pos - map_x_;
         dest.y = y_pos - map_y_;
         dest.w = 60;
         dest.h = 60;
         SDL_RenderCopy(renderer, texture, NULL, &dest);
+
     }
 
     void HandleInput(SDL_Event event)
@@ -87,6 +92,8 @@ struct GameCharacter{
 
     void Doplayer(Map &map_data)
     {
+        if(come_back_time == 0)
+        {
         x_val += RUN_SPEED;
         if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
 
@@ -108,6 +115,19 @@ struct GameCharacter{
 
     Check_to_map(map_data);
     CenterEntityOnMap(map_data);
+        }
+
+        else
+        {
+            come_back_time--;
+            if (come_back_time == 0)
+            {
+                x_pos = 0;
+                y_pos = 380;
+                y_val = 0;
+                x_val = 0;
+            }
+        }
 }
 
     void Check_to_map(Map& map_data)
@@ -137,6 +157,8 @@ struct GameCharacter{
                         x_pos -= width_frame+1;
                 }
             }
+
+
         }
 
 
@@ -157,6 +179,13 @@ struct GameCharacter{
 
                 if(val1 != BLANK_TILE || val2 != BLANK_TILE)
                 {
+                    if(val1 == 43|| val2 == 43)
+                    {
+                        come_back_time = 30;
+
+                    }
+
+
                         y_pos = y2 * OBJECT_SIZE;
                         y_pos -= (height_frame+1);
                         y_val = 0;
@@ -197,6 +226,7 @@ struct GameCharacter{
 		map_data.start_x = map_data.max_x - SCREEN_WIDTH;
 	}
 }
+
 
 };
 

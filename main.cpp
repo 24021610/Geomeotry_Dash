@@ -23,6 +23,8 @@ int main(int argc, char *argv[])
 
     Timer timer;
 
+
+
     bool is_quit = false;
     SDL_Event event;
     while (!is_quit)
