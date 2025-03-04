@@ -4,6 +4,7 @@
 #include "Game_Character.h"
 #include <stdfix.h>
 #include "Timer.h"
+#include "Menu.h"
 
 
 int main(int argc, char *argv[])
@@ -35,7 +36,6 @@ int main(int argc, char *argv[])
                 if(event.type == SDL_QUIT) is_quit = true;
                 character.HandleInput(event);
             }
-
 
 
             Map map_data = game_map_.GetMap();

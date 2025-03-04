@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1740998637 source:d:\coding projects\firstevergame\main.cpp
+1741077730 source:d:\coding projects\firstevergame\main.cpp
 	"header.h"
 	"Game_object.h"
 	"Gamemap.h"
 	"Game_Character.h"
 	<stdfix.h>
 	"Timer.h"
+	"Menu.h"
 
 1738429358 d:\sdl2-devel-2.30.12-mingw\sdl2-2.30.12\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -516,9 +517,13 @@
 	"begin_code.h"
 	"close_code.h"
 
-1740838520 d:\coding projects\firstevergame\timer.h
+1741077730 d:\coding projects\firstevergame\timer.h
 	"header.h"
 
 1740998222 d:\coding projects\firstevergame\explosion.h
 	"header.h"
+
+1741079876 d:\coding projects\firstevergame\menu.h
+	"header.h"
+	"Game_object.h"
 

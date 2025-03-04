@@ -50,6 +50,7 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="Gamemap.h" />
+		<Unit filename="Menu.h" />
 		<Unit filename="Timer.h" />
 		<Unit filename="header.h">
 			<Option target="&lt;{~None~}&gt;" />
