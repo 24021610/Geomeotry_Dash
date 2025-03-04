@@ -2,7 +2,6 @@
 #include "Game_object.h"
 #include "Gamemap.h"
 #include "Game_Character.h"
-#include <stdfix.h>
 #include "Timer.h"
 #include "Menu.h"
 
@@ -30,22 +29,25 @@ int main(int argc, char *argv[])
     SDL_Event event;
     while (!is_quit)
     {
+
         timer.start();
+        loadMenu();
         while(SDL_PollEvent(&event))
             {
                 if(event.type == SDL_QUIT) is_quit = true;
-                character.HandleInput(event);
+                if (game_state_menu == true)
+                {
+                    HandleEventsInMenu(event);
+                }
+
+                else if(game_state_playing)
+                {
+                    character.HandleInput(event);
+                }
             }
 
-
-            Map map_data = game_map_.GetMap();
-            character.SetMapXY(map_data.start_x, map_data.start_y);
-            character.Doplayer(map_data);
-
-            game_map_.SetMap(map_data);
-            backgr.renderTexture();
-            game_map_.DrawMap();
-            character.Show();
+            if (game_state_menu) UpdateMenu();
+            else  if (game_state_playing == true) SDL_Quit();
 
             SDL_RenderPresent(renderer);
             SDL_RenderClear(renderer);

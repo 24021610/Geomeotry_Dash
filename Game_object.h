@@ -20,7 +20,7 @@ struct Gameobject{
    {
         SDL_Surface *surface = IMG_Load(filename);
 
-        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface  -> format, 255, 255, 255));
+        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface  -> format, 127, 127, 127));
         texture = SDL_CreateTextureFromSurface(renderer, surface);
         rect.w = surface ->w;
         rect.h = surface ->h;
@@ -28,16 +28,15 @@ struct Gameobject{
         SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
    }
 
-   void loadTexture(const char *filename)
+   void loadTexturewithoutQuerying(const char *filename)
    {
         SDL_Surface *surface = IMG_Load(filename);
 
-        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface  -> format, 255, 255, 255));
+        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface  -> format, 127, 127, 127));
         texture = SDL_CreateTextureFromSurface(renderer, surface);
         rect.w = surface ->w;
         rect.h = surface ->h;
         SDL_FreeSurface(surface);
-        SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
    }
 
    void loadBackground()

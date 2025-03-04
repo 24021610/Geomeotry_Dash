@@ -7,7 +7,7 @@
 bool game_state_playing = false;
 bool game_state_paused = false;
 bool game_state_menu = true;
-bool current_game_state;
+
 
 Gameobject background;
 
@@ -18,19 +18,20 @@ Gameobject finish_screen;
 
 void loadMenu()
 {
-    menu.loadTexture ()
+    menu.SetRect(0,0);
+    menu.loadTexturewithoutQuerying("Resources/menu.jpg");
+    menu.renderTexture();
 }
 
 void LoadPauseButton()
 {
-    pause_button.loadTexture("Resources/pause.png");
     pause_button.SetRect(900, 30);
 }
 
 void LoadStartButton()
 {
-    play_button.loadTexture("Resources/play.png");
-    play_button.SetRect(900, 30);
+    play_button.SetRect(475, 200);
+    play_button.loadTexturewithoutQuerying("Resources/play_button.png");
     play_button.renderTexture();
 }
 
@@ -40,22 +41,47 @@ void HandleEventsInMenu(SDL_Event &event)
         {
             int x, y;
             SDL_GetMouseState(&x, &y);
-        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
-        {
 
-            if (x > 160 && x<320 && y>160 && y<320)
+
+            if ( (x > 480 && x<690 && y>200 && y<410) )
             {
                 LoadStartButton();
             }
             else
             {
                 SDL_DestroyTexture(play_button.texture);
+                loadMenu();
             }
         }
 
+        else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+        {
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+
+            if (game_state_menu)
+            {
+            if (x > 480 && x<690 && y>200 && y<410)
+                {
+                game_state_playing = true;
+                game_state_menu = false;
+                }
+            }
+        }
 }
 
+void UpdateMenu()
+{
+    int x, y;
+    SDL_GetMouseState(&x, &y);
 
+    if (x > 480 && x < 690 && y > 200 && y < 410) {
+        LoadStartButton();
+    } else {
+        SDL_DestroyTexture(play_button.texture);
+        loadMenu();
+    }
+}
 
 
 #endif // MENU_H_INCLUDED
