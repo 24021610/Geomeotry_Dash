@@ -34,7 +34,10 @@ struct Input
 #define PLAYER_SPEED 18
 
 
+#define BLANK_TILE_MIN 90
+#define BLANK_TILE_MAX 100
 #define BLANK_TILE 1
+#define MAX_NUMBER_OF_TILES 150
 
 
 #endif // HEADER_H_INCLUDED

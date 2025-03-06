@@ -5,7 +5,7 @@
 #include "header.h"
 #include "Game_object.h"
 
-#define GAME_MAP_X 36
+#define GAME_MAP_X 72
 #define GAME_MAP_Y 15
 #define OBJECT_SIZE 40
 
@@ -19,7 +19,7 @@ struct Map{
 };
 
 struct GameMap{
-    Gameobject tile_mat[47];
+    Gameobject tile_mat[MAX_NUMBER_OF_TILES];
     Map game_map;
     FILE* fp = NULL;
 
@@ -68,9 +68,9 @@ struct GameMap{
     void LoadTiles ()
     {
         FILE* fp = NULL;
-        char file_image[47];
+        char file_image[MAX_NUMBER_OF_TILES];
 
-        for(int i=0; i< 47; i++)
+        for(int i=0; i< MAX_NUMBER_OF_TILES; i++)
         {
             sprintf_s(file_image, "Resources/%d.png", i);
 

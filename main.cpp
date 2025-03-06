@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
                 SDL_Delay(delay);
             }
     }
-
-
-
 }
+
+
+

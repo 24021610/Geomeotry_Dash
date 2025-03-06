@@ -16,8 +16,12 @@ struct GameCharacter{
     Input input_type;
     int frame;
     int status;
+
     bool on_ground;
     bool alive;
+    bool original_state;
+    bool riding_ship_state;
+    bool spiky_state;
 
     int map_x_;
     int map_y_;
@@ -25,7 +29,7 @@ struct GameCharacter{
     int come_back_time;
 
 
-    GameCharacter()
+     GameCharacter()
     {
     texture = NULL;
     rect.w = 60;
@@ -45,6 +49,9 @@ struct GameCharacter{
 	input_type.right = 0;
 	on_ground = false;
 	alive = true;
+	original_state = true;
+	riding_ship_state = false;
+	spiky_state = false;
 	come_back_time = 0;
     }
 
@@ -66,7 +73,7 @@ struct GameCharacter{
 
     void Show()
     {
-
+        UpdateImageofPlayer();
         SDL_Rect dest;
         dest.x = x_pos - map_x_;
         dest.y = y_pos - map_y_;
@@ -78,6 +85,7 @@ struct GameCharacter{
 
     void HandleInput(SDL_Event event)
     {
+        UpdateImageofPlayer();
         status = WALK_RIGHT;
         if (event.type == SDL_KEYDOWN)
         {
@@ -103,15 +111,22 @@ struct GameCharacter{
 
         Check_to_map(map_data);
 
-    if(input_type.jump == 1)
-    {
-        if(on_ground == true)
+    if(input_type.jump == 1 && original_state == true)
         {
-        y_val = -25;
-        on_ground = false;
-        input_type.jump = 0;
+            if(on_ground == true)
+            {
+                y_val = -25;
+                on_ground = false;
+                input_type.jump = 0;
+            }
         }
-    }
+
+        else if (input_type.jump == 1 && riding_ship_state == true)
+            {
+                y_val = -25;
+                on_ground = false;
+                input_type.jump = 0;
+            }
 
     Check_to_map(map_data);
     CenterEntityOnMap(map_data);
@@ -128,9 +143,9 @@ struct GameCharacter{
                 x_val = 0;
             }
         }
-}
+    }
 
-    void Check_to_map(Map& map_data)
+ void Check_to_map(Map& map_data)
     {
         int x1 = 0, x2 = 0;
         int y1 = 0, y2 = 0;
@@ -151,8 +166,20 @@ struct GameCharacter{
                 int val1 = map_data.tile[y1][x2];
                 int val2 = map_data.tile[y2][x2];
 
-                if(val1 != BLANK_TILE || val2 != BLANK_TILE)
+                if (val1 == 2 || val2 == 2)
+                    {
+                        original_state = false;
+                        riding_ship_state = true;
+                    }
+
+
+                else if(val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
+                    if( (val1 > 42 && val1 < 46)  || (val2 >42 && val2 < 46)  )
+                    {
+                        come_back_time = 30;
+
+                    }
                         x_pos = x2* OBJECT_SIZE;
                         x_pos -= width_frame+1;
                 }
@@ -177,15 +204,19 @@ struct GameCharacter{
                 int val1 = map_data.tile[y2][x1];
                 int val2 = map_data.tile[y2][x2];
 
-                if(val1 != BLANK_TILE || val2 != BLANK_TILE)
+                if (val1 == 2 || val2 == 2)
+                    {
+                        original_state = false;
+                        riding_ship_state = true;
+                    }
+
+                else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
                     if(val1 == 43|| val2 == 43)
                     {
                         come_back_time = 30;
 
                     }
-
-
                         y_pos = y2 * OBJECT_SIZE;
                         y_pos -= (height_frame+1);
                         y_val = 0;
@@ -198,11 +229,25 @@ struct GameCharacter{
                 int val1 = map_data.tile[y1][x1];
 				int val2 = map_data.tile[y1][x2];
 
-				if (val1 != BLANK_TILE || val2 != BLANK_TILE)
-                {
+				if (val1 == 2 || val2 == 2)
+                    {
+                        original_state = false;
+                        riding_ship_state = true;
+                    }
+
+				else
+
+                     if (val1 > BLANK_TILE || val2 > BLANK_TILE)
+                    {
+                    if( (val1 > 42 && val1 < 46)  || (val2 >42 && val2 < 46)  )
+                    {
+                        come_back_time = 30;
+
+                    }
+
                     y_pos = (y1+1)*OBJECT_SIZE;
                     y_val = 0;
-                }
+                    }
             }
         }
 
@@ -211,7 +256,6 @@ struct GameCharacter{
 
 
     }
-
  void CenterEntityOnMap(Map& map_data)
 {
 
@@ -226,7 +270,17 @@ struct GameCharacter{
 		map_data.start_x = map_data.max_x - SCREEN_WIDTH;
 	}
 }
-
+void UpdateImageofPlayer()
+{
+		if (original_state == 1)
+		{
+			LoadImg("Resources/model.jpg");
+		}
+		else if (riding_ship_state == 1)
+		{
+			LoadImg("Resources/model2.png");
+		}
+}
 
 };
 
