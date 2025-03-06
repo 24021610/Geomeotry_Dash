@@ -47,7 +47,17 @@ int main(int argc, char *argv[])
             }
 
             if (game_state_menu) UpdateMenu();
-            else  if (game_state_playing == true) SDL_Quit();
+            else  if (game_state_playing == true)
+            {
+                Map map_data = game_map_.GetMap();
+            character.SetMapXY(map_data.start_x, map_data.start_y);
+            character.Doplayer(map_data);
+
+            game_map_.SetMap(map_data);
+            backgr.renderTexture();
+            game_map_.DrawMap();
+            character.Show();
+            }
 
             SDL_RenderPresent(renderer);
             SDL_RenderClear(renderer);

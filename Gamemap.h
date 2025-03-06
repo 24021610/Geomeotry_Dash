@@ -19,7 +19,7 @@ struct Map{
 };
 
 struct GameMap{
-    Gameobject tile_mat[45];
+    Gameobject tile_mat[47];
     Map game_map;
     FILE* fp = NULL;
 
@@ -68,9 +68,9 @@ struct GameMap{
     void LoadTiles ()
     {
         FILE* fp = NULL;
-        char file_image[46];
+        char file_image[47];
 
-        for(int i=0; i< 46; i++)
+        for(int i=0; i< 47; i++)
         {
             sprintf_s(file_image, "Resources/%d.png", i);
 

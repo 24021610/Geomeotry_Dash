@@ -526,3 +526,40 @@
 	"header.h"
 	"Game_object.h"
 
+1741225791 source:d:\coding projects\geomeotry_dash\main.cpp
+	"header.h"
+	"Game_object.h"
+	"Gamemap.h"
+	"Game_Character.h"
+	"Timer.h"
+	"Menu.h"
+
+1741225507 d:\coding projects\geomeotry_dash\header.h
+	<SDL.h>
+	<SDL_image.h>
+	<iostream>
+	<string>
+	<algorithm>
+	<windows.h>
+	<stdfix.h>
+
+1741225488 d:\coding projects\geomeotry_dash\game_object.h
+	"header.h"
+	"stdfix.h"
+
+1741228181 d:\coding projects\geomeotry_dash\gamemap.h
+	<iostream>
+	"header.h"
+	"Game_object.h"
+
+1741225488 d:\coding projects\geomeotry_dash\game_character.h
+	"header.h"
+	<stdfix.h>
+
+1741225488 d:\coding projects\geomeotry_dash\timer.h
+	"header.h"
+
+1741231142 d:\coding projects\geomeotry_dash\menu.h
+	"header.h"
+	"Game_object.h"
+

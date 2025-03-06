@@ -19,7 +19,7 @@ Gameobject finish_screen;
 void loadMenu()
 {
     menu.SetRect(0,0);
-    menu.loadTexturewithoutQuerying("Resources/menu.jpg");
+    menu.loadTexturewithoutQuerying("Resources/menu.png");
     menu.renderTexture();
 }
 
@@ -30,7 +30,7 @@ void LoadPauseButton()
 
 void LoadStartButton()
 {
-    play_button.SetRect(475, 200);
+    play_button.SetRect(420, 160);
     play_button.loadTexturewithoutQuerying("Resources/play_button.png");
     play_button.renderTexture();
 }
@@ -43,7 +43,7 @@ void HandleEventsInMenu(SDL_Event &event)
             SDL_GetMouseState(&x, &y);
 
 
-            if ( (x > 480 && x<690 && y>200 && y<410) )
+            if ( (x > 440 && x < 660 && y > 160 && y < 370) )
             {
                 LoadStartButton();
             }
@@ -61,7 +61,7 @@ void HandleEventsInMenu(SDL_Event &event)
 
             if (game_state_menu)
             {
-            if (x > 480 && x<690 && y>200 && y<410)
+            if (x > 440 && x < 660 && y > 160 && y < 370)
                 {
                 game_state_playing = true;
                 game_state_menu = false;
@@ -75,7 +75,7 @@ void UpdateMenu()
     int x, y;
     SDL_GetMouseState(&x, &y);
 
-    if (x > 480 && x < 690 && y > 200 && y < 410) {
+    if (x > 440 && x < 660 && y > 160 && y < 370) {
         LoadStartButton();
     } else {
         SDL_DestroyTexture(play_button.texture);
