@@ -21,7 +21,7 @@ struct GameCharacter{
     bool alive;
     bool original_state;
     bool riding_ship_state;
-    bool spiky_state;
+    bool reversal_state;
 
     int map_x_;
     int map_y_;
@@ -47,11 +47,11 @@ struct GameCharacter{
 	status = WALK_NONE;
 	input_type.jump = 0;
 	input_type.right = 0;
-	on_ground = false;
+	on_ground = true;
 	alive = true;
 	original_state = true;
 	riding_ship_state = false;
-	spiky_state = false;
+	reversal_state = false;
 	come_back_time = 0;
     }
 
@@ -106,8 +106,10 @@ struct GameCharacter{
         if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
 
 
-        y_val += 5 ;
+        (reversal_state == true? y_val -= 5 : y_val += 5);
         if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
+
+        if (y_val < MIN_FALL_SPEED) y_val = MIN_FALL_SPEED;
 
         Check_to_map(map_data);
 
@@ -115,7 +117,7 @@ struct GameCharacter{
         {
             if(on_ground == true)
             {
-                y_val = -25;
+                y_val = -60;
                 on_ground = false;
                 input_type.jump = 0;
             }
@@ -123,7 +125,15 @@ struct GameCharacter{
 
         else if (input_type.jump == 1 && riding_ship_state == true)
             {
-                y_val = -25;
+                y_val = -60;
+                on_ground = false;
+                input_type.jump = 0;
+            }
+
+        else if (input_type.jump == 1 && reversal_state == true)
+            if(on_ground == true)
+            {
+                y_val = 60;
                 on_ground = false;
                 input_type.jump = 0;
             }
@@ -170,14 +180,24 @@ struct GameCharacter{
                     {
                         original_state = false;
                         riding_ship_state = true;
+                        reversal_state = false;
+                    }
+
+                else if ( (val1 >= 5  && val1 <=7) || (val2 >= 5  && val2 <=7))
+                    {
+                        original_state = false;
+                        riding_ship_state = false;
+                        reversal_state = true;
                     }
 
 
                 else if(val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
-                    if( (val1 > 42 && val1 < 46)  || (val2 >42 && val2 < 46)  )
+                    if( (val1 > 42 && val1 < 60) ||  (val2 > 42 && val1 < 60))
                     {
                         come_back_time = 30;
+                        original_state = true;
+                        reversal_state = false;
 
                     }
                         x_pos = x2* OBJECT_SIZE;
@@ -208,16 +228,26 @@ struct GameCharacter{
                     {
                         original_state = false;
                         riding_ship_state = true;
+                        reversal_state = false;
+                    }
+
+                 else if ( (val1 >= 5  && val1 <=7) || (val2 >= 5  && val2 <=7))
+                    {
+                        original_state = false;
+                        riding_ship_state = false;
+                        reversal_state = true;
                     }
 
                 else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
-                    if(val1 == 43|| val2 == 43)
+                    if( (val1 > 42 && val1 < 60) ||  (val2 > 42 && val1 < 60))
                     {
                         come_back_time = 30;
+                        original_state = true;
+                        reversal_state = false;
 
                     }
-                        y_pos = y2 * OBJECT_SIZE;
+                        y_pos = (y2 * OBJECT_SIZE);
                         y_pos -= (height_frame+1);
                         y_val = 0;
                         on_ground = true;
@@ -233,27 +263,36 @@ struct GameCharacter{
                     {
                         original_state = false;
                         riding_ship_state = true;
+                        reversal_state = false;
+                    }
+
+                else if ( (val1 >= 5  && val1 <=7) || (val2 >= 5  && val2 <=7))
+                    {
+                        original_state = false;
+                        riding_ship_state = false;
+                        reversal_state = true;
                     }
 
 				else
 
-                     if (val1 > BLANK_TILE || val2 > BLANK_TILE)
+                    if (val1 > BLANK_TILE || val2 > BLANK_TILE)
                     {
-                    if( (val1 > 42 && val1 < 46)  || (val2 >42 && val2 < 46)  )
+                        if( (val1 > 42 && val1 < 60) ||  (val2 > 42 && val1 < 60))
                     {
                         come_back_time = 30;
-
+                        original_state = true;
+                        reversal_state = false;
                     }
 
-                    y_pos = (y1+1)*OBJECT_SIZE;
-                    y_val = 0;
+                        y_pos = (y1+1)*OBJECT_SIZE;
+                        y_val = 0;
+                        on_ground = true;
                     }
             }
         }
 
         x_pos += x_val;
         y_pos += y_val;
-
 
     }
  void CenterEntityOnMap(Map& map_data)
