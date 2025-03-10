@@ -7,6 +7,7 @@
 bool game_state_playing = false;
 bool game_state_paused = false;
 bool game_state_menu = true;
+bool game_state_finish = false;
 
 
 Gameobject background;
@@ -33,6 +34,13 @@ void LoadStartButton()
     play_button.SetRect(420, 160);
     play_button.loadTexturewithoutQuerying("Resources/play_button.png");
     play_button.renderTexture();
+}
+
+void LoadFinishScreen()
+{
+    finish_screen.SetRect(100, 100);
+    finish_screen.loadTexturewithoutQuerying("Resources/finish_screen.png");
+    finish_screen.renderTexture();
 }
 
 void HandleEventsInMenu(SDL_Event &event)
@@ -82,6 +90,7 @@ void UpdateMenu()
         loadMenu();
     }
 }
+
 
 
 #endif // MENU_H_INCLUDED

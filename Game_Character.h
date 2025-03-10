@@ -2,6 +2,7 @@
 #define GAME_CHARACTER_H_INCLUDED
 
 #include "header.h"
+#include "Menu.h"
 #include <stdfix.h>
 
 struct GameCharacter{
@@ -17,7 +18,7 @@ struct GameCharacter{
     int status;
 
     bool on_ground;
-    bool alive;
+    bool win;
     bool original_state;
     bool riding_ship_state;
     bool reversal_state;
@@ -33,23 +34,25 @@ struct GameCharacter{
      GameCharacter()
     {
     texture = NULL;
-    rect.w = 40;
-    rect.h = 40;
+    rect.w = 45;
+    rect.h = 45;
     frame = 0;
 	x_pos = 0;
-	y_pos = 360;
+	y_pos = 365;
 
 	x_val = 0;
 	y_val = 0;
-	width_frame = 40;
-	height_frame = 40;
+	width_frame = 45;
+	height_frame = 45;
 	map_x_ = 0;
 	map_y_ = 0;
+
 	status = WALK_NONE;
 	input_type.jump = 0;
 	input_type.right = 0;
 	on_ground = true;
-	alive = true;
+	win = false;
+
 	original_state = true;
 	riding_ship_state = false;
 	reversal_state = false;
@@ -81,37 +84,66 @@ struct GameCharacter{
     void Show()
     {
         UpdateImageofPlayer();
-        SDL_Rect dest;
-        dest.x = x_pos - map_x_;
-        dest.y = y_pos - map_y_;
-        dest.w = 45;
-        dest.h = 45;
+        int x = x_pos - map_x_;
+        int y = y_pos - map_y_;
 
+        SDL_Rect dest_original;
+        dest_original.x = x;
+        dest_original.y = y;
+        dest_original.w = 45;
+        dest_original.h = 45;
 
+        SDL_Rect dest_other;
+        dest_other.x = x;
+        dest_other.y = y;
+        dest_other.w = 60;
+        dest_other.h = 60;
+
+        SDL_Point center = {22 , 22};
 
         if (original_state)
         {
             if(!on_ground)
             {
-            SDL_Point center = {22 , 22};
-            SDL_RenderCopyEx(renderer, texture, NULL, &dest, rotation, &center, SDL_FLIP_NONE);
-            rotation += 4.08;
+            SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, rotation, &center, SDL_FLIP_NONE);
+            rotation += 40.58;
             if (rotation > 360) rotation = 0;
             }
             else
             {
             SDL_Point center = {22 , 22};
-            if (rotation >0 && rotation < 90) SDL_RenderCopyEx(renderer, texture, NULL, &dest, 90, &center, SDL_FLIP_NONE);
-            else if (rotation >=90 && rotation < 180) SDL_RenderCopyEx(renderer, texture, NULL, &dest, 180, &center, SDL_FLIP_NONE);
-            else if (rotation >=180 && rotation < 270) SDL_RenderCopyEx(renderer, texture, NULL, &dest, 270, &center, SDL_FLIP_NONE);
-            else if (rotation >=270 && rotation < 360) SDL_RenderCopyEx(renderer, texture, NULL, &dest, 360, &center, SDL_FLIP_NONE);
-            else SDL_RenderCopy(renderer, texture, NULL, &dest);
+            if (rotation >0 && rotation < 90) SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, 90, &center, SDL_FLIP_NONE);
+            else if (rotation >=90 && rotation < 180) SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, 180, &center, SDL_FLIP_NONE);
+            else if (rotation >=180 && rotation < 270) SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, 270, &center, SDL_FLIP_NONE);
+
+            else SDL_RenderCopy(renderer, texture, NULL, &dest_original);
             }
         }
-        else
+        else if (rocket_state)
         {
-            SDL_RenderCopy(renderer, texture, NULL, &dest);
+            if (input_type.jump == 1) SDL_RenderCopyEx(renderer, texture, NULL, &dest_other, -45, &center, SDL_FLIP_NONE);
+            else SDL_RenderCopyEx(renderer, texture, NULL, &dest_other, 45, &center, SDL_FLIP_NONE);
         }
+
+        else if(reversal_state)
+        {
+            if(!on_ground)
+            {
+            SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, rotation, &center, SDL_FLIP_NONE);
+            rotation -= 4.58;
+            if (rotation < -360) rotation = 0;
+            }
+            else
+            {
+            SDL_Point center = {22 , 22};
+            if (rotation < 0 && rotation > -90) SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, -90, &center, SDL_FLIP_NONE);
+            else if (rotation <= -90 && rotation > -180) SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, -180, &center, SDL_FLIP_NONE);
+            else if (rotation <= -180 && rotation > -270) SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, -270, &center, SDL_FLIP_NONE);
+
+            else SDL_RenderCopy(renderer, texture, NULL, &dest_original);
+            }
+        }
+        else SDL_RenderCopy(renderer, texture, NULL, &dest_original);
     }
 
     void HandleInput(SDL_Event event)
@@ -162,16 +194,17 @@ struct GameCharacter{
             else if (reversal_state)
             {
                 x_val += RUN_SPEED;
-                if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
+                if (x_val > 14.3) x_val = 14.3;
 
                 y_val -= 5;
-                if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
+
+                if (y_val < MIN_FALL_SPEED) y_val = MIN_FALL_SPEED;
 
                 if (input_type.jump == 1)
                 {
                     if(on_ground)
                     {
-                        y_val = -60;
+                        y_val = 31.1;
                         on_ground = false;
                         input_type.jump = 0;
                     }
@@ -284,6 +317,12 @@ struct GameCharacter{
                         rocket_state = true;
                     }
 
+                else if ( val1 > 99   || val2 >99)
+                    {
+                        game_state_finish = true;
+                        game_state_playing = false;
+                    }
+
 
                 else if(val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
@@ -349,6 +388,10 @@ struct GameCharacter{
                         reversal_state = false;
                         rocket_state = true;
                     }
+                else if ( val1 > 99   || val2 >99)
+                    {
+                        game_state_finish = true;
+                    }
 
                 else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
@@ -404,6 +447,11 @@ struct GameCharacter{
                         riding_ship_state = false;
                         reversal_state = false;
                         rocket_state = true;
+                    }
+
+                 else if ( val1 > 99   || val2 >99)
+                    {
+                        game_state_finish = true;
                     }
 
 				else if (val1 > BLANK_TILE || val2 > BLANK_TILE)

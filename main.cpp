@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
         while(SDL_PollEvent(&event))
             {
                 if(event.type == SDL_QUIT) is_quit = true;
-                if (game_state_menu == true)
+                if (game_state_menu)
                 {
                     HandleEventsInMenu(event);
                 }
@@ -47,9 +47,10 @@ int main(int argc, char *argv[])
             }
 
             if (game_state_menu) UpdateMenu();
-            else  if (game_state_playing == true)
+
+            else  if (game_state_playing)
             {
-                Map map_data = game_map_.GetMap();
+            Map map_data = game_map_.GetMap();
             character.SetMapXY(map_data.start_x, map_data.start_y);
             character.Doplayer(map_data);
 
@@ -57,6 +58,17 @@ int main(int argc, char *argv[])
             backgr.renderTexture();
             game_map_.DrawMap();
             character.Show();
+            }
+
+            else if (game_state_finish)
+            {
+            game_state_playing = false;
+            Map map_data = game_map_.GetMap();
+            character.SetMapXY(map_data.start_x, map_data.start_y);
+            game_map_.SetMap(map_data);
+            backgr.renderTexture();
+            game_map_.DrawMap();
+            LoadFinishScreen();
             }
 
             SDL_RenderPresent(renderer);
