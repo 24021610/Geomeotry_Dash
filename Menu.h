@@ -10,6 +10,7 @@ bool game_state_menu = true;
 bool game_state_finish = false;
 
 
+
 Gameobject background;
 
 Gameobject menu;
@@ -20,9 +21,11 @@ Gameobject finish_screen;
 void loadMenu()
 {
     menu.SetRect(0,0);
-    menu.loadTexturewithoutQuerying("Resources/menu.png");
+    menu.loadTexture("Resources/menu.png");
     menu.renderTexture();
 }
+
+
 
 void LoadPauseButton()
 {
@@ -83,9 +86,12 @@ void UpdateMenu()
     int x, y;
     SDL_GetMouseState(&x, &y);
 
-    if (x > 440 && x < 660 && y > 160 && y < 370) {
+    if (x > 440 && x < 660 && y > 160 && y < 370)
+        {
         LoadStartButton();
-    } else {
+    }
+    else
+    {
         SDL_DestroyTexture(play_button.texture);
         loadMenu();
     }

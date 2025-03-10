@@ -8,6 +8,10 @@
 
 int main(int argc, char *argv[])
 {
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) return 0;
+    Mix_Music *gameMusic = Mix_LoadMUS("Resources/ingame.mp3");
+    Mix_Music *menuMusic = Mix_LoadMUS("Resources/menu.mp3");
+
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -38,6 +42,7 @@ int main(int argc, char *argv[])
                 if (game_state_menu)
                 {
                     HandleEventsInMenu(event);
+                    UpdateMenu();
                 }
 
                 else if(game_state_playing)
@@ -45,11 +50,18 @@ int main(int argc, char *argv[])
                     character.HandleInput(event);
                 }
             }
-
-            if (game_state_menu) UpdateMenu();
-
-            else  if (game_state_playing)
+            if (game_state_menu)
             {
+                UpdateMenu();
+                if (Mix_PlayingMusic() == 0) Mix_PlayMusic(menuMusic,-1);
+            }
+            else if (game_state_playing)
+            {
+            Mix_FreeMusic(menuMusic);
+            menuMusic = NULL;
+            if (Mix_PlayingMusic() == 0) Mix_PlayMusic(gameMusic ,-1);
+            if (character.x_pos == 0) Mix_HaltMusic();
+
             Map map_data = game_map_.GetMap();
             character.SetMapXY(map_data.start_x, map_data.start_y);
             character.Doplayer(map_data);
