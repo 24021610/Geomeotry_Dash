@@ -11,7 +11,6 @@ struct GameCharacter{
     float x_pos, y_pos;
 
     int width_frame, height_frame;
-    SDL_Rect frame_clip[7];
 
     Input input_type;
     int frame;
@@ -22,18 +21,20 @@ struct GameCharacter{
     bool original_state;
     bool riding_ship_state;
     bool reversal_state;
+    bool rocket_state;
 
     int map_x_;
     int map_y_;
 
     int come_back_time;
+    double rotation;
 
 
      GameCharacter()
     {
     texture = NULL;
-    rect.w = 60;
-    rect.h = 60;
+    rect.w = 40;
+    rect.h = 40;
     frame = 0;
 	x_pos = 0;
 	y_pos = 360;
@@ -52,7 +53,9 @@ struct GameCharacter{
 	original_state = true;
 	riding_ship_state = false;
 	reversal_state = false;
+	rocket_state = false;
 	come_back_time = 0;
+	rotation = 0;
     }
 
     void SetMapXY(const int map_x, const int map_y)
@@ -63,10 +66,14 @@ struct GameCharacter{
 
     void LoadImg(const char* filename)
     {
-        texture =  IMG_LoadTexture(renderer, filename);
-        if (texture == nullptr) SDL_Quit();
-        width_frame = rect.w;
-        height_frame = rect.h;
+        SDL_Surface *surface = IMG_Load(filename);
+
+        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface  -> format, 127, 127, 127));
+        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        rect.w = surface ->w;
+        rect.h = surface ->h;
+        SDL_FreeSurface(surface);
+        SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
     }
 
 
@@ -77,10 +84,34 @@ struct GameCharacter{
         SDL_Rect dest;
         dest.x = x_pos - map_x_;
         dest.y = y_pos - map_y_;
-        dest.w = 60;
-        dest.h = 60;
-        SDL_RenderCopy(renderer, texture, NULL, &dest);
+        dest.w = 45;
+        dest.h = 45;
 
+
+
+        if (original_state)
+        {
+            if(!on_ground)
+            {
+            SDL_Point center = {22 , 22};
+            SDL_RenderCopyEx(renderer, texture, NULL, &dest, rotation, &center, SDL_FLIP_NONE);
+            rotation += 4.08;
+            if (rotation > 360) rotation = 0;
+            }
+            else
+            {
+            SDL_Point center = {22 , 22};
+            if (rotation >0 && rotation < 90) SDL_RenderCopyEx(renderer, texture, NULL, &dest, 90, &center, SDL_FLIP_NONE);
+            else if (rotation >=90 && rotation < 180) SDL_RenderCopyEx(renderer, texture, NULL, &dest, 180, &center, SDL_FLIP_NONE);
+            else if (rotation >=180 && rotation < 270) SDL_RenderCopyEx(renderer, texture, NULL, &dest, 270, &center, SDL_FLIP_NONE);
+            else if (rotation >=270 && rotation < 360) SDL_RenderCopyEx(renderer, texture, NULL, &dest, 360, &center, SDL_FLIP_NONE);
+            else SDL_RenderCopy(renderer, texture, NULL, &dest);
+            }
+        }
+        else
+        {
+            SDL_RenderCopy(renderer, texture, NULL, &dest);
+        }
     }
 
     void HandleInput(SDL_Event event)
@@ -92,7 +123,12 @@ struct GameCharacter{
             switch (event.key.keysym.sym)
             {
             case SDLK_SPACE:
-                input_type.jump = 1;
+
+                if (rocket_state)
+                {
+                    input_type.jump = (input_type.jump == 1 ? 0 : 1);
+                }
+                else input_type.jump = 1;
             }
         }
     }
@@ -102,41 +138,81 @@ struct GameCharacter{
     {
         if(come_back_time == 0)
         {
-        x_val += RUN_SPEED;
-        if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
 
-
-        (reversal_state == true? y_val -= 5 : y_val += 5);
-        if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
-
-        if (y_val < MIN_FALL_SPEED) y_val = MIN_FALL_SPEED;
-
-        Check_to_map(map_data);
-
-    if(input_type.jump == 1 && original_state == true)
-        {
-            if(on_ground == true)
+            if(original_state)
             {
-                y_val = -60;
-                on_ground = false;
-                input_type.jump = 0;
-            }
-        }
+                x_val += RUN_SPEED;
+                if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
 
-        else if (input_type.jump == 1 && riding_ship_state == true)
-            {
-                y_val = -60;
-                on_ground = false;
-                input_type.jump = 0;
+                y_val += GRAVITY;
+                if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
+                if (y_val < MIN_FALL_SPEED) y_val = MIN_FALL_SPEED;
+
+                if (input_type.jump == 1)
+                {
+                    if(on_ground)
+                    {
+                        y_val = -60;
+                        on_ground = false;
+                        input_type.jump = 0;
+                    }
+                }
             }
 
-        else if (input_type.jump == 1 && reversal_state == true)
-            if(on_ground == true)
+            else if (reversal_state)
             {
-                y_val = 60;
-                on_ground = false;
-                input_type.jump = 0;
+                x_val += RUN_SPEED;
+                if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
+
+                y_val -= 5;
+                if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
+
+                if (input_type.jump == 1)
+                {
+                    if(on_ground)
+                    {
+                        y_val = -60;
+                        on_ground = false;
+                        input_type.jump = 0;
+                    }
+                }
             }
+
+            else if (rocket_state)
+            {
+                x_val += RUN_SPEED;
+                if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
+                if (input_type.jump == 1)
+                {
+                    y_val = -15;
+
+                }
+                else if (input_type.jump == 0)
+                {
+                    y_val = 15;
+                }
+            }
+
+            else if (riding_ship_state)
+            {
+                 x_val += RUN_SPEED;
+                if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
+
+                y_val += 5;
+                if (y_val > MAX_FALL_SPEED) y_val = MAX_FALL_SPEED;
+                if (y_val < MIN_FALL_SPEED) y_val = MIN_FALL_SPEED;
+
+                if (input_type.jump == 1)
+                {
+                    if(on_ground)
+                    {
+                        y_val = -60;
+                        input_type.jump = 0;
+                    }
+                }
+            }
+
+
 
     Check_to_map(map_data);
     CenterEntityOnMap(map_data);
@@ -144,7 +220,7 @@ struct GameCharacter{
 
         else
         {
-            come_back_time--;
+            come_back_time -= 2;
             if (come_back_time == 0)
             {
                 x_pos = 0;
@@ -176,24 +252,42 @@ struct GameCharacter{
                 int val1 = map_data.tile[y1][x2];
                 int val2 = map_data.tile[y2][x2];
 
-                if (val1 == 2 || val2 == 2)
+                if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX))
                     {
                         original_state = false;
                         riding_ship_state = true;
                         reversal_state = false;
+                        rocket_state = false;
                     }
 
-                else if ( (val1 >= 5  && val1 <=7) || (val2 >= 5  && val2 <=7))
+                else if ( (val1 >= ORIGINAL_MIN  && val1 <=ORIGINAL_MAX) || (val2 >= ORIGINAL_MIN  && val2 <= ORIGINAL_MAX))
+                    {
+                        original_state = true;
+                        riding_ship_state = false;
+                        reversal_state = false;
+                        rocket_state = false;
+                    }
+
+                else if ( (val1 >= REVERSAL_MIN  && val1 <= REVERSAL_MAX) || (val2 >= REVERSAL_MIN  && val2 <=REVERSAL_MAX) )
                     {
                         original_state = false;
                         riding_ship_state = false;
                         reversal_state = true;
+                        rocket_state = false;
+                    }
+
+                else if ( (val1 >= ROCKET_MIN  && val1 <= ROCKET_MAX) || (val2 >= ROCKET_MIN  && val2 <=ROCKET_MAX) )
+                    {
+                        original_state = false;
+                        riding_ship_state = false;
+                        reversal_state = false;
+                        rocket_state = true;
                     }
 
 
                 else if(val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
-                    if( (val1 > 42 && val1 < 60) ||  (val2 > 42 && val1 < 60))
+                    if( (val1 > 42 && val1 < 65) ||  (val2 > 42 && val1 < 65))
                     {
                         come_back_time = 30;
                         original_state = true;
@@ -224,29 +318,50 @@ struct GameCharacter{
                 int val1 = map_data.tile[y2][x1];
                 int val2 = map_data.tile[y2][x2];
 
-                if (val1 == 2 || val2 == 2)
+                if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX))
                     {
                         original_state = false;
                         riding_ship_state = true;
                         reversal_state = false;
+                        rocket_state = false;
                     }
 
-                 else if ( (val1 >= 5  && val1 <=7) || (val2 >= 5  && val2 <=7))
+                else if ( (val1 >= ORIGINAL_MIN && val1 <= ORIGINAL_MAX) || (val2 >= ORIGINAL_MIN && val2 <= ORIGINAL_MAX))
+                    {
+                        original_state = true;
+                        riding_ship_state = false;
+                        reversal_state = false;
+                        rocket_state = false;
+                    }
+
+                 else if ( (val1 >= REVERSAL_MIN  && val1 <= REVERSAL_MAX) || (val2 >= REVERSAL_MIN  && val2 <= REVERSAL_MAX))
                     {
                         original_state = false;
                         riding_ship_state = false;
                         reversal_state = true;
+                        rocket_state = false;
+                    }
+
+                else if ( (val1 >= ROCKET_MIN  && val1 <= ROCKET_MAX) || (val2 >= ROCKET_MIN  && val2 <= ROCKET_MAX))
+                    {
+                        original_state = false;
+                        riding_ship_state = false;
+                        reversal_state = false;
+                        rocket_state = true;
                     }
 
                 else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
-                    if( (val1 > 42 && val1 < 60) ||  (val2 > 42 && val1 < 60))
+                    if( (val1 > 42 && val1 < 65) ||  (val2 > 42 && val1 < 65))
                     {
                         come_back_time = 30;
                         original_state = true;
                         reversal_state = false;
+                        riding_ship_state = false;
+                        rocket_state = false;
 
                     }
+
                         y_pos = (y2 * OBJECT_SIZE);
                         y_pos -= (height_frame+1);
                         y_val = 0;
@@ -259,30 +374,47 @@ struct GameCharacter{
                 int val1 = map_data.tile[y1][x1];
 				int val2 = map_data.tile[y1][x2];
 
-				if (val1 == 2 || val2 == 2)
+				if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX) )
                     {
                         original_state = false;
                         riding_ship_state = true;
                         reversal_state = false;
+                        rocket_state = false;
                     }
 
-                else if ( (val1 >= 5  && val1 <=7) || (val2 >= 5  && val2 <=7))
+                else if ( (val1 >= REVERSAL_MIN  && val1 <= REVERSAL_MAX) || (val2 >= REVERSAL_MIN && val2 <= REVERSAL_MAX))
                     {
                         original_state = false;
                         riding_ship_state = false;
                         reversal_state = true;
+                        rocket_state = false;
                     }
 
-				else
+                else if ( (val1 >= ORIGINAL_MIN  && val1 <= ORIGINAL_MAX) || (val2 >= ORIGINAL_MIN  && val2 <= ORIGINAL_MAX))
+                    {
+                        original_state = true;
+                        riding_ship_state = false;
+                        reversal_state = false;
+                        rocket_state = false;
+                    }
 
-                    if (val1 > BLANK_TILE || val2 > BLANK_TILE)
+                else if ( (val1 >= ROCKET_MIN  && val1 <= ROCKET_MAX) || (val2 >= ROCKET_MIN  && val2 <= ROCKET_MAX))
                     {
-                        if( (val1 > 42 && val1 < 60) ||  (val2 > 42 && val1 < 60))
+                        original_state = false;
+                        riding_ship_state = false;
+                        reversal_state = false;
+                        rocket_state = true;
+                    }
+
+				else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
                     {
+                        if( (val1 > 42 && val1 < 65) ||  (val2 > 42 && val1 < 65))
+                        {
                         come_back_time = 30;
                         original_state = true;
                         reversal_state = false;
-                    }
+                        riding_ship_state = false;
+                        }
 
                         y_pos = (y1+1)*OBJECT_SIZE;
                         y_val = 0;
@@ -311,13 +443,23 @@ struct GameCharacter{
 }
 void UpdateImageofPlayer()
 {
-		if (original_state == 1)
+		if (original_state)
 		{
 			LoadImg("Resources/model.jpg");
 		}
-		else if (riding_ship_state == 1)
+		else if (riding_ship_state)
 		{
 			LoadImg("Resources/model2.png");
+		}
+
+		else if (reversal_state)
+		{
+			LoadImg("Resources/model3.png");
+		}
+
+		else if (rocket_state)
+		{
+			LoadImg("Resources/model4.png");
 		}
 }
 
