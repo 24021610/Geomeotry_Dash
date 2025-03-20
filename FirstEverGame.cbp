@@ -46,6 +46,8 @@
 			<Add directory="../../Downloads/SDL2_ttf-devel-2.24.0-mingw/SDL2_ttf-2.24.0/x86_64-w64-mingw32/lib" />
 			<Add directory="../../Downloads/SDL2_mixer-devel-2.8.0-mingw/SDL2_mixer-2.8.0/x86_64-w64-mingw32/lib" />
 		</Linker>
+		<Unit filename="Bullet.h" />
+		<Unit filename="FinalBoss.h" />
 		<Unit filename="Game_Character.h" />
 		<Unit filename="Game_object.h">
 			<Option target="&lt;{~None~}&gt;" />

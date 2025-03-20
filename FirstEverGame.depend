@@ -1,11 +1,13 @@
 # depslib dependency file v1.0
-1741617964 source:d:\coding projects\firstevergame\main.cpp
+1742483260 source:d:\coding projects\firstevergame\main.cpp
 	"header.h"
 	"Game_object.h"
 	"Gamemap.h"
 	"Game_Character.h"
 	"Timer.h"
 	"Menu.h"
+	"Bullet.h"
+	"FinalBoss.h"
 
 1738429358 d:\sdl2-devel-2.30.12-mingw\sdl2-2.30.12\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -456,7 +458,7 @@
 	<SDL.h>
 	"header.h"
 
-1741613204 d:\coding projects\firstevergame\header.h
+1742481193 d:\coding projects\firstevergame\header.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
@@ -471,7 +473,7 @@
 	"graphics.h"
 	"header.h"
 
-1741600193 d:\coding projects\firstevergame\gamemap.h
+1741853604 d:\coding projects\firstevergame\gamemap.h
 	<iostream>
 	"header.h"
 	"Game_object.h"
@@ -487,11 +489,11 @@
 	"header.h"
 	"Game_object.h"
 
-1741338100 d:\coding projects\firstevergame\game_object.h
+1742477559 d:\coding projects\firstevergame\game_object.h
 	"header.h"
 	"stdfix.h"
 
-1741602475 d:\coding projects\firstevergame\game_character.h
+1742480350 d:\coding projects\firstevergame\game_character.h
 	"header.h"
 	"Menu.h"
 	<stdfix.h>
@@ -522,7 +524,7 @@
 1740998222 d:\coding projects\firstevergame\explosion.h
 	"header.h"
 
-1741616201 d:\coding projects\firstevergame\menu.h
+1742483291 d:\coding projects\firstevergame\menu.h
 	"header.h"
 	"Game_object.h"
 
@@ -560,6 +562,14 @@
 	"header.h"
 
 1741231142 d:\coding projects\geomeotry_dash\menu.h
+	"header.h"
+	"Game_object.h"
+
+1742462200 d:\coding projects\firstevergame\bullet.h
+	"header.h"
+	"Game_object.h"
+
+1742477605 d:\coding projects\firstevergame\finalboss.h
 	"header.h"
 	"Game_object.h"
 

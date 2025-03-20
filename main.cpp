@@ -4,7 +4,8 @@
 #include "Game_Character.h"
 #include "Timer.h"
 #include "Menu.h"
-
+#include "Bullet.h"
+#include "FinalBoss.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,39 +28,48 @@ int main(int argc, char *argv[])
 
     Timer timer;
 
-
-
     bool is_quit = false;
     SDL_Event event;
     while (!is_quit)
     {
-
         timer.start();
-        loadMenu();
-        while(SDL_PollEvent(&event))
-            {
-                if(event.type == SDL_QUIT) is_quit = true;
-                if (game_state_menu)
-                {
-                    HandleEventsInMenu(event);
-                    UpdateMenu();
-                }
 
-                else if(game_state_playing)
-                {
-                    character.HandleInput(event);
-                }
+        while(SDL_PollEvent(&event))
+        {
+            if(event.type == SDL_QUIT)
+            {
+                quit();
+                is_quit = true;
             }
             if (game_state_menu)
             {
-                UpdateMenu();
-                if (Mix_PlayingMusic() == 0) Mix_PlayMusic(menuMusic,-1);
+                HandleEventsInMenu(event);
+                character.come_back_time = 30;
             }
-            else if (game_state_playing)
+            else if(game_state_playing)
             {
-            Mix_FreeMusic(menuMusic);
-            menuMusic = NULL;
-            if (Mix_PlayingMusic() == 0) Mix_PlayMusic(gameMusic ,-1);
+                character.HandleInput(event);
+            }
+            else if(game_state_paused)
+            {
+                HandleEventsWhilePausing(event);
+            }
+        }
+
+        if (game_state_menu)
+        {
+            if(Mix_PlayingMusic() == 0)Mix_PlayMusic(menuMusic,-1);
+            if(Mix_PausedMusic() && Mix_PlayingMusic() )
+            {
+                Mix_HaltMusic();
+            }
+            loadMenu();
+            UpdateMenu();
+        }
+        else if (game_state_playing)
+        {
+            if(Mix_PlayingMusic() == 0) Mix_PlayMusic(gameMusic,-1);
+            if (Mix_PausedMusic()) Mix_ResumeMusic();
             if (character.x_pos == 0) Mix_HaltMusic();
 
             Map map_data = game_map_.GetMap();
@@ -70,32 +80,23 @@ int main(int argc, char *argv[])
             backgr.renderTexture();
             game_map_.DrawMap();
             character.Show();
-            }
+        } // Missing closing brace added here
+        else if(game_state_paused)
+        {
+            LoadPauseScreen();
+            if(Mix_PlayingMusic()) Mix_PauseMusic();
+        }
 
-            else if (game_state_finish)
-            {
-            game_state_playing = false;
-            Map map_data = game_map_.GetMap();
-            character.SetMapXY(map_data.start_x, map_data.start_y);
-            game_map_.SetMap(map_data);
-            backgr.renderTexture();
-            game_map_.DrawMap();
-            LoadFinishScreen();
-            }
+        SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
 
-            SDL_RenderPresent(renderer);
-            SDL_RenderClear(renderer);
+        int real_time = timer.Get_Ticks();
+        int one_frame = 1000/FRAME_PER_SECOND; // MILLISECOND
 
-            int real_time = timer.Get_Ticks();
-            int one_frame = 1000/FRAME_PER_SECOND; // MILLISECOND
-
-            if(real_time < one_frame)
-            {
-                int delay = one_frame - real_time;
-                SDL_Delay(delay);
-            }
+        if(real_time < one_frame)
+        {
+            int delay = one_frame - real_time;
+            SDL_Delay(delay);
+        }
     }
 }
-
-
-

@@ -118,6 +118,14 @@ struct GameMap{
             map_y++;
         }
     }
+
+    void quit()
+    {
+        for(int i=0; i < MAX_NUMBER_OF_TILES; i++)
+        {
+            SDL_DestroyTexture(tile_mat[i].texture);
+        }
+    }
 };
 
 

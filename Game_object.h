@@ -28,37 +28,11 @@ struct Gameobject{
         SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
    }
 
-   void loadTexturewithoutQuerying(const char *filename)
-   {
-        SDL_Surface *surface = IMG_Load(filename);
 
-        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface  -> format, 127, 127, 127));
-        texture = SDL_CreateTextureFromSurface(renderer, surface);
-        rect.w = surface ->w;
-        rect.h = surface ->h;
-        SDL_FreeSurface(surface);
-   }
-
-   void loadBackground()
-   {
-       SDL_Texture* texture = IMG_LoadTexture(renderer, "Resources/background.png");
-   }
-
-   void SetRect(const int &x, const int &y)
-    {
-        rect.x = x;
-        rect.y = y;
-    }
-
-    SDL_Rect GetRect()
-    {
-        return rect;
-    }
-
-    SDL_Texture* getTexture()
-    {
-        return texture;
-    }
+    void loadBackground(){SDL_Texture* texture = IMG_LoadTexture(renderer, "Resources/background.png");}
+    void SetRect(const int &x, const int &y){rect.x = x; rect.y = y;}
+    SDL_Rect GetRect(){return rect;}
+    SDL_Texture* getTexture(){return texture;}
 
     void renderTexture()
     {

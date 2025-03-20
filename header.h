@@ -26,32 +26,36 @@ struct Input
     int jump;
 };
 
-#define WALK_NONE  0
-#define WALK_RIGHT 1
+const int WALK_NONE = 0;
+const int WALK_RIGHT = 1;
 
-#define GRAVITY 3
-#define RUN_SPEED 3
-#define MAX_FALL_SPEED 14
-#define MIN_FALL_SPEED -19
-#define MAX_RUN_SPEED 13.6
+const int GRAVITY = 3;
+const int RUN_SPEED = 3;
+const int MAX_FALL_SPEED = 14;
+const int MIN_FALL_SPEED = -19;
+const double MAX_RUN_SPEED = 13.6;
 
 
 
-#define BLANK_TILE_MIN 90
-#define BLANK_TILE_MAX 100
-#define BLANK_TILE 1
-#define MAX_NUMBER_OF_TILES 150
+const int BLANK_TILE_MIN = 90;
+const int BLANK_TILE_MAX = 100;
+const int BLANK_TILE = 1;
+const int MAX_NUMBER_OF_TILES = 150;
 
-#define SPIKE_MIN 40
-#define SPIKE_MAX 70
-#define ORIGINAL_MIN 8
-#define ORIGINAL_MAX 10
-#define RIDING_SHIP_MIN 2
-#define RIDING_SHIP_MAX 4
-#define ROCKET_MIN 11
-#define ROCKET_MAX 13
-#define REVERSAL_MIN 5
-#define REVERSAL_MAX 7
+const int SPIKE_MIN = 40;
+const int SPIKE_MAX = 70;
+const int ORIGINAL_MIN = 8;
+const int ORIGINAL_MAX = 10;
+const int RIDING_SHIP_MIN = 2;
+const int RIDING_SHIP_MAX = 4;
+const int ROCKET_MIN = 11;
+const int ROCKET_MAX = 13;
+const int REVERSAL_MIN = 5;
+const int REVERSAL_MAX = 7;
+
+const int PAUSE_SCREEN_X = 90;
+const int PAUSE_SCREEN_Y = 110;
+
 
 
 

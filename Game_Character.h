@@ -161,6 +161,16 @@ struct GameCharacter{
                     input_type.jump = (input_type.jump == 1 ? 0 : 1);
                 }
                 else input_type.jump = 1;
+                break;
+
+
+            case SDLK_ESCAPE:
+                if(game_state_paused == false)
+                {
+                    game_state_paused = true;
+                    game_state_playing = false;
+                }
+                break;
             }
         }
     }
