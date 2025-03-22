@@ -1,30 +1,30 @@
 # Geomeotry_Dash
- T�n: Tr?n �?c Quang
-M� SV: 24021610
+ Tên: Trần Đức Quang
+Mã SV: 24021610
 
 Game: Geomeotry Dash Meltdown Remake. 
-��y l� m?t game d?a tr�n game geometry dash meltdown c?a ROBTOB.
-C�ch choi game don gi?n: ?n n�t space d? nh?y qua c�c chu?ng ng?i v?t du?c d?nh s?n, sau m?t kho?ng th?i gian n?u di du?c d?n cu?i map s? th?ng game.
+Đây là một game dựa trên game geometry dash meltdown của ROBTOB.
+Cách chơi game đơn giản: ấn nút space để nhảy qua các chướng ngại vật được định sẵn, sau một khoảng thời gian nếu đi được đến cuối map sẽ thắng game.
 
-C�c t�nh nang v� thu?t to�n du?c s? d?ng:
-- Thu vi?n SDL2
--C�c struct/class kh�c nhau du?c s? d?ng d? qu?n l� c�c d?i tu?ng game kh�c nhau
-- 4 d?ng nh�n v?t du?c chuy?n d?i t�y theo giai do?n c?a game
-- 4 lo?i m�n h�nh ch? y?u ? trong game: menu ch�nh, m�n h�nh d?ng, m�n h�nh game v� m�n h�nh sau khi k?t th�c game
-- X�y d?ng game map v� va ch?m map d?a theo h? t?a d? oxy d? v? t?ng � ?nh h?p l� d? t?o n�n map
-- X? l� fps
+Các tính năng và thuật toán được sử dụng:
+- Thư viện SDL2
+-Các struct/class khác nhau được sử dụng để quản lí các đối tượng game khác nhau
+- 4 dạng nhân vật được chuyển đổi tùy theo giai đoạn của game
+- 4 loại màn hình chủ yếu ở trong game: menu chính, màn hình dừng, màn hình game và màn hình sau khi kết thúc game
+- Xây dựng game map và va chạm map dựa theo hệ tọa độ oxy để vẽ từng ô ảnh hợp lí để tạo nên map
+- Xử lí fps
 
-Chi ti?t v? t?ng h�m trong chuong tr�nh:
-- Game_Character: H�m ch�nh x? l� t?t c? m?i th? li�n quan d?n nh�n v?t ch�nh c?a game
-- Game_object: H�m x? l� m?i th? c� d?ng h�nh ch? nh?t v?i m?t texture v� m?t sdl_rect
--Timer: X? l� fps
--Gamemap: H�m x�y d?ng b?n d? game
--Menu: H�m x? l� c�c tr?ng th�i kh�c nhau c?a game(game state menu, playing, finish v� paused)
--Font: H�m x? l� c�c v?n d? li�n quan d?n ch? v� s? li?u ngo�i(highscore v� s? l?n choi)
+Chi tiết về từng hàm trong chương trình:
+- Game_Character: Hàm chính xử lí tất cả mọi thứ liên quan đến nhân vật chính của game
+- Game_object: Hàm xử lí mọi thứ có dạng hình chữ nhật với một texture và một sdl_rect
+-Timer: Xử lí fps
+-Gamemap: Hàm xây dựng bản đồ game
+-Menu: Hàm xử lí các trạng thái khác nhau của game(game state menu, playing, finish và paused)
+-Font: Hàm xử lí các vấn đề liên quan đến chữ và số liệu ngoài(highscore và số lần chơi)
 
 
-C�c ngu?n tham kh?o cho t?ng ph?n c?a game:
-- H�m x�y d?ng map v� va ch?m map:https://www.youtube.com/results?search_query=phat+trien+phan+mem+123a+z
--H�m nh�n v?t di chuy?n, m�n h�nh di chuy?n, �m thanh, h�nh ?nh, font ch?,..: https://docs.google.com/document/d/1FZ3jTqHxtyZznNWiJmmve0zYu_aSliUqLP2OsMcdehQ/edit?tab=t.0#heading=h.g69r5ua9lzeh v� tr�n c? lazyfoo: https://lazyfoo.net/tutorials/SDL/index.php
+Các nguồn tham khảo cho từng phần của game:
+- Hàm xây dựng map và va chạm map:https://www.youtube.com/results?search_query=phat+trien+phan+mem+123a+z
+-Hàm nhân vật di chuyển, màn hình di chuyển, âm thanh, hình ảnh, font chữ,..: https://docs.google.com/document/d/1FZ3jTqHxtyZznNWiJmmve0zYu_aSliUqLP2OsMcdehQ/edit?tab=t.0#heading=h.g69r5ua9lzeh và trên cả lazyfoo: https://lazyfoo.net/tutorials/SDL/index.php
 
 
