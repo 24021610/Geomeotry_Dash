@@ -14,11 +14,9 @@ struct GameCharacter{
     int width_frame, height_frame;
 
     Input input_type;
-    int frame;
-    int status;
+
 
     bool on_ground;
-    bool win;
     bool original_state;
     bool riding_ship_state;
     bool reversal_state;
@@ -28,6 +26,8 @@ struct GameCharacter{
     int map_y_;
 
     int come_back_time;
+    int death_count;
+
     double rotation;
 
 
@@ -36,9 +36,8 @@ struct GameCharacter{
     texture = NULL;
     rect.w = 45;
     rect.h = 45;
-    frame = 0;
 	x_pos = 0;
-	y_pos = 365;
+	y_pos = 400;
 
 	x_val = 0;
 	y_val = 0;
@@ -47,17 +46,16 @@ struct GameCharacter{
 	map_x_ = 0;
 	map_y_ = 0;
 
-	status = WALK_NONE;
 	input_type.jump = 0;
 	input_type.right = 0;
 	on_ground = true;
-	win = false;
 
 	original_state = true;
 	riding_ship_state = false;
 	reversal_state = false;
 	rocket_state = false;
 	come_back_time = 0;
+	death_count = 0;
 	rotation = 0;
     }
 
@@ -84,7 +82,7 @@ struct GameCharacter{
     void Show()
     {
         UpdateImageofPlayer();
-        int x = x_pos - map_x_;
+        int x = x_pos - map_x_; // map x va map y la khoang cach ma map da bi cuon di
         int y = y_pos - map_y_;
 
         SDL_Rect dest_original;
@@ -130,7 +128,7 @@ struct GameCharacter{
             if(!on_ground)
             {
             SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, rotation, &center, SDL_FLIP_NONE);
-            rotation -= 4.58;
+            rotation -= 40.58;
             if (rotation < -360) rotation = 0;
             }
             else
@@ -149,7 +147,6 @@ struct GameCharacter{
     void HandleInput(SDL_Event event)
     {
         UpdateImageofPlayer();
-        status = WALK_RIGHT;
         if (event.type == SDL_KEYDOWN)
         {
             switch (event.key.keysym.sym)
@@ -171,6 +168,7 @@ struct GameCharacter{
                     game_state_playing = false;
                 }
                 break;
+
             }
         }
     }
@@ -180,9 +178,9 @@ struct GameCharacter{
     {
         if(come_back_time == 0)
         {
-
             if(original_state)
             {
+
                 x_val += RUN_SPEED;
                 if (x_val > MAX_RUN_SPEED) x_val = MAX_RUN_SPEED;
 
@@ -267,7 +265,7 @@ struct GameCharacter{
             if (come_back_time == 0)
             {
                 x_pos = 0;
-                y_pos = 380;
+                y_pos = 400;
                 y_val = 0;
                 x_val = 0;
             }
@@ -281,18 +279,18 @@ struct GameCharacter{
 
         //check ngang
 
-        int height_min = min(height_frame , OBJECT_SIZE) ;
-        x1 = (x_pos + x_val) / OBJECT_SIZE;
-        x2 = (x_pos + x_val + width_frame-1) / OBJECT_SIZE;
+        int height_min = min(height_frame , OBJECT_SIZE) ; // 45
+        x1 = (x_pos + x_val) / OBJECT_SIZE; //vi tri hien tai + vi tri di chuyen ra o hien tai trong map
+        x2 = (x_pos + x_val + width_frame-1) / OBJECT_SIZE; // o tiep theo
 
-        y1 = y_pos / OBJECT_SIZE;
+        y1 = y_pos / OBJECT_SIZE; // giong nhu tren
         y2 = (y_pos + height_min - 1) / OBJECT_SIZE;
 
         if(x1 >= 0 && x2 < GAME_MAP_X && y1 >=0 && y2 < GAME_MAP_Y)
         {
-            if (x_val > 0)
+            if (x_val > 0) // dang di chuyen
             {
-                int val1 = map_data.tile[y1][x2];
+                int val1 = map_data.tile[y1][x2]; //xet va cham theo map
                 int val2 = map_data.tile[y2][x2];
 
                 if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX))
@@ -327,6 +325,7 @@ struct GameCharacter{
                         rocket_state = true;
                     }
 
+
                 else if ( val1 > 99   || val2 >99)
                     {
                         game_state_finish = true;
@@ -336,15 +335,17 @@ struct GameCharacter{
 
                 else if(val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
-                    if( (val1 > 42 && val1 < 65) ||  (val2 > 42 && val1 < 65))
+                    if( (val1 > SPIKE_MIN && val1 < SPIKE_MAX) ||  (val2 > SPIKE_MIN && val1 < SPIKE_MAX))
                     {
                         come_back_time = 30;
+                        death_count++;
                         original_state = true;
                         reversal_state = false;
+                        game_state_playing=true;
 
                     }
-                        x_pos = x2* OBJECT_SIZE;
-                        x_pos -= width_frame+1;
+                        x_pos = x2* OBJECT_SIZE; //vi tri ngay do tru di mot khoang
+                        x_pos -= width_frame+1; // dung im cho den khi nao nhan vat di chuyen dc
                 }
             }
 
@@ -353,6 +354,7 @@ struct GameCharacter{
 
 
         //check doc
+
         int width_min = min(width_frame, OBJECT_SIZE);
         x1 = x_pos / OBJECT_SIZE;
         x2 = (x_pos + width_min) / OBJECT_SIZE;
@@ -398,6 +400,9 @@ struct GameCharacter{
                         reversal_state = false;
                         rocket_state = true;
                     }
+
+
+
                 else if ( val1 > 99   || val2 >99)
                     {
                         game_state_finish = true;
@@ -405,13 +410,15 @@ struct GameCharacter{
 
                 else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
                 {
-                    if( (val1 > 42 && val1 < 65) ||  (val2 > 42 && val1 < 65))
+                    if( (val1 > SPIKE_MIN && val1 < SPIKE_MAX) ||  (val2 > SPIKE_MIN && val1 < SPIKE_MAX))
                     {
                         come_back_time = 30;
+                        death_count++;
                         original_state = true;
                         reversal_state = false;
                         riding_ship_state = false;
                         rocket_state = false;
+                        game_state_playing=true;
 
                     }
 
@@ -419,6 +426,10 @@ struct GameCharacter{
                         y_pos -= (height_frame+1);
                         y_val = 0;
                         on_ground = true;
+                }
+                else if (val1 == BLANK_TILE || val2 == BLANK_TILE)
+                {
+                    if(!riding_ship_state) on_ground = false;
                 }
             }
 
@@ -462,16 +473,19 @@ struct GameCharacter{
                  else if ( val1 > 99   || val2 >99)
                     {
                         game_state_finish = true;
+                        game_state_playing=false;
                     }
 
 				else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
                     {
-                        if( (val1 > 42 && val1 < 65) ||  (val2 > 42 && val1 < 65))
+                        if( (val1 > SPIKE_MIN && val1 < SPIKE_MAX) ||  (val2 > SPIKE_MIN && val1 < SPIKE_MAX))
                         {
                         come_back_time = 30;
+                        death_count++;
                         original_state = true;
                         reversal_state = false;
                         riding_ship_state = false;
+                        game_state_playing=true;
                         }
 
                         y_pos = (y1+1)*OBJECT_SIZE;
@@ -488,7 +502,7 @@ struct GameCharacter{
  void CenterEntityOnMap(Map& map_data)
 {
 
-	map_data.start_x = x_pos - (SCREEN_WIDTH / 3.4);
+	map_data.start_x = x_pos - (SCREEN_WIDTH / 3.4); // vi tri dau tien cua ban do cho den mot vi tri nao do de ban do dc cuon theo
 
 	if (map_data.start_x < 0)
 	{
@@ -496,7 +510,7 @@ struct GameCharacter{
 	}
 	else if (map_data.start_x + SCREEN_WIDTH >= map_data.max_x)
 	{
-		map_data.start_x = map_data.max_x - SCREEN_WIDTH;
+		map_data.start_x = map_data.max_x - SCREEN_WIDTH; // neu no vuot qua ban do thi start se lui ve de nhan vat o cho do
 	}
 }
 void UpdateImageofPlayer()

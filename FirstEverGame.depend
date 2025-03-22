@@ -1,13 +1,12 @@
 # depslib dependency file v1.0
-1742483260 source:d:\coding projects\firstevergame\main.cpp
+1742615910 source:d:\coding projects\firstevergame\main.cpp
 	"header.h"
 	"Game_object.h"
 	"Gamemap.h"
 	"Game_Character.h"
 	"Timer.h"
 	"Menu.h"
-	"Bullet.h"
-	"FinalBoss.h"
+	"Font.h"
 
 1738429358 d:\sdl2-devel-2.30.12-mingw\sdl2-2.30.12\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -458,12 +457,15 @@
 	<SDL.h>
 	"header.h"
 
-1742481193 d:\coding projects\firstevergame\header.h
+1742613442 d:\coding projects\firstevergame\header.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
+	<SDL_ttf.h>
 	<iostream>
 	<string>
+	<vector>
+	<fstream>
 	<algorithm>
 	<windows.h>
 	<stdfix.h>
@@ -473,7 +475,7 @@
 	"graphics.h"
 	"header.h"
 
-1741853604 d:\coding projects\firstevergame\gamemap.h
+1742628838 d:\coding projects\firstevergame\gamemap.h
 	<iostream>
 	"header.h"
 	"Game_object.h"
@@ -489,11 +491,11 @@
 	"header.h"
 	"Game_object.h"
 
-1742477559 d:\coding projects\firstevergame\game_object.h
+1742521814 d:\coding projects\firstevergame\game_object.h
 	"header.h"
 	"stdfix.h"
 
-1742480350 d:\coding projects\firstevergame\game_character.h
+1742629994 d:\coding projects\firstevergame\game_character.h
 	"header.h"
 	"Menu.h"
 	<stdfix.h>
@@ -518,13 +520,13 @@
 	"begin_code.h"
 	"close_code.h"
 
-1741266593 d:\coding projects\firstevergame\timer.h
+1742521926 d:\coding projects\firstevergame\timer.h
 	"header.h"
 
 1740998222 d:\coding projects\firstevergame\explosion.h
 	"header.h"
 
-1742483291 d:\coding projects\firstevergame\menu.h
+1742606265 d:\coding projects\firstevergame\menu.h
 	"header.h"
 	"Game_object.h"
 
@@ -565,11 +567,15 @@
 	"header.h"
 	"Game_object.h"
 
-1742462200 d:\coding projects\firstevergame\bullet.h
+1742549034 d:\coding projects\firstevergame\bullet.h
 	"header.h"
 	"Game_object.h"
 
-1742477605 d:\coding projects\firstevergame\finalboss.h
+1742549114 d:\coding projects\firstevergame\finalboss.h
 	"header.h"
 	"Game_object.h"
+	"Bullet.h"
+
+1742527557 d:\coding projects\firstevergame\font.h
+	"header.h"
 

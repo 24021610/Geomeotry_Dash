@@ -12,9 +12,9 @@
 using namespace std;
 
 struct Map{
-    int start_x, start_y, max_x, max_y;
+    int start_x, start_y, max_x, max_y; // vi tri chinh xac so voi man hinh va chi so cua o do (max=start/objectsize)
 
-    int tile[GAME_MAP_Y][GAME_MAP_X];
+    int tile[GAME_MAP_Y][GAME_MAP_X]; //map
     char* filename;
 };
 
@@ -94,12 +94,12 @@ struct GameMap{
         int map_y = 0;
 
         map_x = game_map.start_x / OBJECT_SIZE;
-        x1 = (game_map.start_x % OBJECT_SIZE) *-1;
-        x2 = x1 + SCREEN_WIDTH +(x1==0? 0:OBJECT_SIZE);
+        x1 = (game_map.start_x % OBJECT_SIZE) *-1; // vi tri hien tai lui ve truoc mot khoang
+        x2 = x1 + SCREEN_WIDTH +(x1==0? 0:OBJECT_SIZE); // vi tri hien tai lui ve sau mot khoang
 
         map_y = game_map.start_y / OBJECT_SIZE;
-        y1 = (game_map.start_y % OBJECT_SIZE) *-1;
-        y2 = y1+ SCREEN_HEIGHT +(y1==0? 0:OBJECT_SIZE);
+        y1 = (game_map.start_y % OBJECT_SIZE) *-1; // vi tri hien tai lui len mot khoang
+        y2 = y1+ SCREEN_HEIGHT +(y1==0? 0:OBJECT_SIZE); // vi tri hien tai lui xuong mot khoang
 
         for(int i = y1; i <y2; i+= OBJECT_SIZE)
         {
@@ -119,13 +119,7 @@ struct GameMap{
         }
     }
 
-    void quit()
-    {
-        for(int i=0; i < MAX_NUMBER_OF_TILES; i++)
-        {
-            SDL_DestroyTexture(tile_mat[i].texture);
-        }
-    }
+
 };
 
 
