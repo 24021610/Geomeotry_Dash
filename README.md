@@ -32,3 +32,50 @@ Cách chơi game đơn giản: ấn nút space để nhảy qua các chướng n
 
 
 
+Checklisk khi chấm bài
+(danh sách dưới đây liệt kê tính năng để giáo viên dễ chấm bài chứ không có nghĩa các bạn cần làm hết mới được 10 nhé)
+
+Tự làm những phần nào, phần nào lấy từ các kiểu tutorial/code mẫu: Tự làm gần hết, trừ phần xử lí va chạm map(đã mở rộng) và phần xây map
+
+Liệt kê các nguồn tham khảo (code, hình ảnh, âm thanh...) (đã liệt kê ở trên)
+
+Dùng các lệnh vẽ hình: có (SDL_RenderCopyEx)
+
+Texture: có
+
+Background: có
+
+Event bàn phím: có (xử lí trong nhân vật game)
+
+Event chuột:có 
+
+Animation (hoạt hình) có
+
+Xử lý va chạm: có
+
+Score (có tính điểm): có (lưu trong file highscore)
+
+Lưu bảng điểm: có 
+
+Sound: có (trong main)
+
+Sound on off: có
+
+Background music: có
+
+Font: có (trong hàm font)
+
+Menu: có (trong hàm menu)
+
+Pause/Resume:có 
+
+Status bar / lives (mạng/máu...): không
+
+Các điểm nổi bật khác: các trạng thái khác nhau của nhân vật, xây dựng map, 
+
+Code viết dễ đọc (gv đánh giá)
+
+Hiểu rõ code (gv đánh giá)
+
+
+
