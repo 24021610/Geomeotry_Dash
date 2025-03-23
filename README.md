@@ -24,9 +24,12 @@ Cách chơi game đơn giản: ấn nút space để nhảy qua các chướng n
 
 
 *Các nguồn tham khảo cho từng phần của game:
-- Hàm xây dựng map và va chạm map:https://www.youtube.com/results?search_query=phat+trien+phan+mem+123a+z
--Hàm nhân vật di chuyển, màn hình di chuyển, âm thanh, hình ảnh, font chữ,..: https://docs.google.com/document/d/1FZ3jTqHxtyZznNWiJmmve0zYu_aSliUqLP2OsMcdehQ/edit?tab=t.0#heading=h.g69r5ua9lzeh và trên cả lazyfoo: https://lazyfoo.net/tutorials/SDL/index.php
+- Hàm va chạm map:https://www.youtube.com/results?search_query=phat+trien+phan+mem+123a+z (tham khảo và đã phát triển thêm)
 
+-Hàm nhân vật di chuyển, màn hình di chuyển, âm thanh, hình ảnh, font chữ,..: https://docs.google.com/document/d/1FZ3jTqHxtyZznNWiJmmve0zYu_aSliUqLP2OsMcdehQ/edit?tab=t.0#heading=h.g69r5ua9lzeh (tự làm)
+
+- Đồ hoa: 50% chụp ảnh từ game chính thức, 50% tự vex và sửa đổi thêm
+- -Âm thanh và font chữ: youtube
 *Link Github cũ: https://github.com/24021610/24021610_TranDucQuang
 -đây là link github lúc bắt đầu học sdl2 trước khi xây dựng các hàm chính của game
 
