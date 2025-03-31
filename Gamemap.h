@@ -5,7 +5,7 @@
 #include "header.h"
 #include "Game_object.h"
 
-#define GAME_MAP_X 501
+#define GAME_MAP_X 508
 #define GAME_MAP_Y 15
 #define OBJECT_SIZE 40
 

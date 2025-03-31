@@ -48,10 +48,10 @@ struct GameCharacter{
 	input_type.right = 0;
 	on_ground = true;
 
-	original_state = true;
+	original_state = false;
 	riding_ship_state = false;
 	reversal_state = false;
-	rocket_state = false;
+	rocket_state = true;
 	come_back_time = 0;
 	death_count = 0;
 	rotation = 0;
