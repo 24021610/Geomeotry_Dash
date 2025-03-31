@@ -335,7 +335,7 @@ struct GameCharacter{
                     }
 
 
-                else if ( val1 > 99   || val2 >99)
+                else if ( val1 > 123   || val2 >123)
                     {
                         game_state_finish = true;
                         riding_ship_state=false;
@@ -418,7 +418,7 @@ struct GameCharacter{
 
 
 
-                else if ( val1 > 99   || val2 >99)
+                else if ( val1 > 123   || val2 >123)
                     {
                         game_state_finish = true;
                         riding_ship_state=false;
@@ -493,7 +493,7 @@ struct GameCharacter{
                         rocket_state = true;
                     }
 
-                 else if ( val1 > 99   || val2 >99)
+                else if ( val1 > 123   || val2 >123)
                     {
                         game_state_finish = true;
                         game_state_playing=false;
