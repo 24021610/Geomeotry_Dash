@@ -15,7 +15,6 @@ struct GameCharacter{
 
     Input input_type;
 
-
     bool on_ground;
     bool original_state;
     bool riding_ship_state;
@@ -29,7 +28,6 @@ struct GameCharacter{
     int death_count;
 
     double rotation;
-
 
      GameCharacter()
     {
@@ -74,14 +72,12 @@ struct GameCharacter{
         rect.w = surface ->w;
         rect.h = surface ->h;
         SDL_FreeSurface(surface);
-        SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
     }
 
 
 
     void Show()
     {
-        UpdateImageofPlayer();
         int x = x_pos - map_x_; // map x va map y la khoang cach ma map da bi cuon di
         int y = y_pos - map_y_;
 
@@ -98,7 +94,10 @@ struct GameCharacter{
         dest_other.h = 60;
 
         SDL_Point center = {22 , 22};
+        UpdateImageofPlayer();
 
+        if(come_back_time==0)
+        {
         if (original_state)
         {
             if(!on_ground)
@@ -109,6 +108,7 @@ struct GameCharacter{
             }
             else
             {
+
             SDL_Point center = {22 , 22};
             if (rotation >0 && rotation < 90) SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, 90, &center, SDL_FLIP_NONE);
             else if (rotation >=90 && rotation < 180) SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, 180, &center, SDL_FLIP_NONE);
@@ -127,6 +127,7 @@ struct GameCharacter{
         {
             if(!on_ground)
             {
+
             SDL_RenderCopyEx(renderer, texture, NULL, &dest_original, rotation, &center, SDL_FLIP_NONE);
             rotation -= 40.58;
             if (rotation < -360) rotation = 0;
@@ -142,6 +143,10 @@ struct GameCharacter{
             }
         }
         else SDL_RenderCopy(renderer, texture, NULL, &dest_original);
+    }
+
+
+
     }
 
     void HandleInput(SDL_Event event)
@@ -174,7 +179,7 @@ struct GameCharacter{
     }
 
 
-    void Doplayer(Map &map_data)
+    void Doplayer(Map &current_map)
     {
         if(come_back_time == 0)
         {
@@ -255,8 +260,8 @@ struct GameCharacter{
 
 
 
-    Check_to_map(map_data);
-    CenterEntityOnMap(map_data);
+    Check_to_map(current_map);
+    CenterEntityOnMap(current_map);
         }
 
         else
@@ -272,7 +277,7 @@ struct GameCharacter{
         }
     }
 
- void Check_to_map(Map& map_data)
+ void Check_to_map(Map& current_map)
     {
         int x1 = 0, x2 = 0;
         int y1 = 0, y2 = 0;
@@ -290,10 +295,14 @@ struct GameCharacter{
         {
             if (x_val > 0) // dang di chuyen
             {
-                int val1 = map_data.tile[y1][x2]; //xet va cham theo map
-                int val2 = map_data.tile[y2][x2];
+                int val1 = current_map.tile[y1][x2]; //xet va cham theo map
+                int val2 = current_map.tile[y2][x2];
 
-                if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX))
+                if ( (val1 >= DECORATION_MIN  && val1 <= DECORATION_MAX) || (val2 >= DECORATION_MIN  && val2 <= DECORATION_MAX))
+                    {
+                    }
+
+                else if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX))
                     {
                         original_state = false;
                         riding_ship_state = true;
@@ -329,6 +338,8 @@ struct GameCharacter{
                 else if ( val1 > 99   || val2 >99)
                     {
                         game_state_finish = true;
+                        riding_ship_state=false;
+                        original_state=true;
                         game_state_playing = false;
                     }
 
@@ -366,10 +377,14 @@ struct GameCharacter{
         {
             if (y_val > 0)
             {
-                int val1 = map_data.tile[y2][x1];
-                int val2 = map_data.tile[y2][x2];
+                int val1 = current_map.tile[y2][x1];
+                int val2 = current_map.tile[y2][x2];
 
-                if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX))
+                if ( (val1 >= DECORATION_MIN  && val1 <= DECORATION_MAX) || (val2 >= DECORATION_MIN  && val2 <= DECORATION_MAX))
+                    {
+                    }
+
+                else if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX))
                     {
                         original_state = false;
                         riding_ship_state = true;
@@ -406,6 +421,8 @@ struct GameCharacter{
                 else if ( val1 > 99   || val2 >99)
                     {
                         game_state_finish = true;
+                        riding_ship_state=false;
+                        original_state=true;
                     }
 
                 else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
@@ -419,6 +436,7 @@ struct GameCharacter{
                         riding_ship_state = false;
                         rocket_state = false;
                         game_state_playing=true;
+
 
                     }
 
@@ -435,10 +453,15 @@ struct GameCharacter{
 
             else if(y_val <= 0)
             {
-                int val1 = map_data.tile[y1][x1];
-				int val2 = map_data.tile[y1][x2];
+                int val1 = current_map.tile[y1][x1];
+				int val2 = current_map.tile[y1][x2];
 
-				if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX) )
+
+				if ( (val1 >= DECORATION_MIN  && val1 <= DECORATION_MAX) || (val2 >= DECORATION_MIN  && val2 <= DECORATION_MAX))
+                    {
+                    }
+
+				else if ( (val1 >= RIDING_SHIP_MIN  && val1 <= RIDING_SHIP_MAX) || (val2 >= RIDING_SHIP_MIN  && val2 <= RIDING_SHIP_MAX) )
                     {
                         original_state = false;
                         riding_ship_state = true;
@@ -474,6 +497,8 @@ struct GameCharacter{
                     {
                         game_state_finish = true;
                         game_state_playing=false;
+                        riding_ship_state=false;
+                        original_state=true;
                     }
 
 				else if (val1 > BLANK_TILE || val2 > BLANK_TILE)
@@ -486,6 +511,7 @@ struct GameCharacter{
                         reversal_state = false;
                         riding_ship_state = false;
                         game_state_playing=true;
+
                         }
 
                         y_pos = (y1+1)*OBJECT_SIZE;
@@ -499,18 +525,18 @@ struct GameCharacter{
         y_pos += y_val;
 
     }
- void CenterEntityOnMap(Map& map_data)
+ void CenterEntityOnMap(Map& current_map)
 {
 
-	map_data.start_x = x_pos - (SCREEN_WIDTH / 3.4); // vi tri dau tien cua ban do cho den mot vi tri nao do de ban do dc cuon theo
+	current_map.start_x = x_pos - (SCREEN_WIDTH / 3.4); // vi tri dau tien cua ban do cho den mot vi tri nao do de ban do dc cuon theo
 
-	if (map_data.start_x < 0)
+	if (current_map.start_x < 0)
 	{
-		map_data.start_x = 0;
+		current_map.start_x = 0;
 	}
-	else if (map_data.start_x + SCREEN_WIDTH >= map_data.max_x)
+	else if (current_map.start_x + SCREEN_WIDTH >= current_map.max_x)
 	{
-		map_data.start_x = map_data.max_x - SCREEN_WIDTH; // neu no vuot qua ban do thi start se lui ve de nhan vat o cho do
+		current_map.start_x = current_map.max_x - SCREEN_WIDTH; // neu no vuot qua ban do thi start se lui ve de nhan vat o cho do
 	}
 }
 void UpdateImageofPlayer()
@@ -534,6 +560,7 @@ void UpdateImageofPlayer()
 			LoadImg("Resources/model4.png");
 		}
 }
+
 
 };
 

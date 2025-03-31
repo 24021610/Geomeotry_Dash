@@ -27,7 +27,6 @@ struct Timer{
         return 0;
     }
 
-
 };
 
 #endif // TIMER_H_INCLUDED

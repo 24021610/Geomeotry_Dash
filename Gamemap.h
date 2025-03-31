@@ -5,7 +5,7 @@
 #include "header.h"
 #include "Game_object.h"
 
-#define GAME_MAP_X 495
+#define GAME_MAP_X 501
 #define GAME_MAP_Y 15
 #define OBJECT_SIZE 40
 
@@ -28,9 +28,9 @@ struct GameMap{
         return game_map;
     }
 
-    void SetMap(Map& map_data)
+    void SetMap(Map& current_map)
     {
-        game_map = map_data;
+        game_map = current_map;
     }
 
     void LoadMap(char* filename){
@@ -59,8 +59,8 @@ struct GameMap{
 	game_map.start_y = 0;
 
 
-        char* dat = filename;
-        game_map.filename = dat;
+        char* current_filename = filename;
+        game_map.filename = current_filename;
         fclose(fp);
 
     }

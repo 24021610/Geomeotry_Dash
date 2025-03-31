@@ -7,9 +7,11 @@ struct Gameobject{
     SDL_Texture* texture;
     SDL_Rect rect;
 
+
     Gameobject()
     {
         texture = NULL;
+
         rect.x = 0;
         rect.y = 0;
         rect.w = 0;
@@ -25,20 +27,18 @@ struct Gameobject{
         rect.w = surface ->w;
         rect.h = surface ->h;
         SDL_FreeSurface(surface);
-        SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
    }
 
 
     void loadBackground(){SDL_Texture* texture = IMG_LoadTexture(renderer, "Resources/background.png");}
     void SetRect(const int &x, const int &y){rect.x = x; rect.y = y;}
-    SDL_Rect GetRect(){return rect;}
-    SDL_Texture* getTexture(){return texture;}
 
     void renderTexture()
     {
         SDL_Rect dest = {rect.x, rect.y, rect.w, rect.h};
         SDL_RenderCopy(renderer, texture, nullptr, &dest);
     }
+
 
 };
 

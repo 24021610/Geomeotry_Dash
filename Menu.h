@@ -27,13 +27,6 @@ void loadMenu()
     menu.renderTexture();
 }
 
-void loadBlankScreen()
-{
-    blank.SetRect(0,0);
-    blank.loadTexture("Resources/blank.png");
-    blank.renderTexture();
-}
-
 
 void LoadPauseScreen()
 {
@@ -92,9 +85,11 @@ void HandleEventsInMenu(SDL_Event &event)
                 }
             }
         }
+
+        else if(game_state_paused==true && game_state_playing==false) SDL_DestroyTexture(menu.texture);
 }
 
-void HandleEventsWhilePausing(SDL_Event &event, int &value)
+void HandleEventsWhilePausing(SDL_Event &event, int &value, int &reset)
 {
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
     {
@@ -109,18 +104,19 @@ void HandleEventsWhilePausing(SDL_Event &event, int &value)
             SDL_GetMouseState(&x, &y);
 
 
-            if ( (x > PAUSE_SCREEN_X+120 && x < PAUSE_SCREEN_X+300 && y > PAUSE_SCREEN_Y+100 && y < PAUSE_SCREEN_Y+310) )
+            if ( (x > PAUSE_SCREEN_X+450 && x < PAUSE_SCREEN_X+620 && y > PAUSE_SCREEN_Y+280 && y < PAUSE_SCREEN_Y+460) )
             {
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
                     game_state_menu=true;
+                    reset=0;
                     game_state_playing = false;
                     game_state_paused=false;
                     SDL_DestroyTexture(pause_screen.texture);
                 }
             }
 
-            else if ( (x > PAUSE_SCREEN_X+580 && x < PAUSE_SCREEN_X+727 && y > PAUSE_SCREEN_Y+228 && y < PAUSE_SCREEN_Y+370) )
+            else if ( (x > PAUSE_SCREEN_X+680 && x < PAUSE_SCREEN_X+870 && y > PAUSE_SCREEN_Y+280 && y < PAUSE_SCREEN_Y+450) )
             {
                 if (event.button.button == SDL_BUTTON_LEFT)
                 {
@@ -141,6 +137,7 @@ void HandleEventsWhileFinishing(SDL_Event &event, int &value)
         game_state_paused = false;
         game_state_playing = false;
         game_state_menu = true;
+
     }
 
     else if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN)
@@ -168,6 +165,7 @@ void HandleEventsWhileFinishing(SDL_Event &event, int &value)
                     game_state_menu=true;
                     game_state_playing = false;
                     game_state_paused=false;
+                    Mix_PauseMusic();
                     SDL_DestroyTexture(finish_screen.texture);
                 }
             }

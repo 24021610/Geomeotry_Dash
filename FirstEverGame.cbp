@@ -3,7 +3,7 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="FirstEverGame" />
-		<Option pch_mode="2" />
+		<Option pch_mode="0" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
@@ -33,18 +33,18 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++17" />
 			<Add option="-fexceptions" />
+			<Add directory="../../Downloads/img/include/SDL2" />
+			<Add directory="D:/Downloads/mix/include/SDL2" />
+			<Add directory="D:/Downloads/ttf/include/SDL2" />
 			<Add directory="../../SDL2-devel-2.30.12-mingw/SDL2-2.30.12/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="../../Downloads/SDL2_image-devel-2.8.4-mingw/SDL2_image-2.8.4/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="../../Downloads/SDL2_mixer-devel-2.8.0-mingw/SDL2_mixer-2.8.0/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="../../Downloads/SDL2_ttf-devel-2.24.0-mingw/SDL2_ttf-2.24.0/x86_64-w64-mingw32/include/SDL2" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image" />
 			<Add option="-lSDL2_mixer -lSDL2_ttf" />
+			<Add directory="../../Downloads/img/lib" />
+			<Add directory="D:/Downloads/mix/lib" />
+			<Add directory="D:/Downloads/ttf/lib" />
 			<Add directory="../../SDL2-devel-2.30.12-mingw/SDL2-2.30.12/x86_64-w64-mingw32/lib" />
-			<Add directory="../../Downloads/SDL2_image-devel-2.8.4-mingw/SDL2_image-2.8.4/x86_64-w64-mingw32/lib" />
-			<Add directory="../../Downloads/SDL2_ttf-devel-2.24.0-mingw/SDL2_ttf-2.24.0/x86_64-w64-mingw32/lib" />
-			<Add directory="../../Downloads/SDL2_mixer-devel-2.8.0-mingw/SDL2_mixer-2.8.0/x86_64-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="Font.h" />
 		<Unit filename="Game_Character.h" />
@@ -59,6 +59,7 @@
 		</Unit>
 		<Unit filename="main.cpp" />
 		<Extensions>
+			<editor_config active="1" use_tabs="0" tab_indents="1" tab_width="4" indent="4" eol_mode="0" />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
